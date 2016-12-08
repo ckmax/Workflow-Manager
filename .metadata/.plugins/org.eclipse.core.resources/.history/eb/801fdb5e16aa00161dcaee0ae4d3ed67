@@ -1,0 +1,17 @@
+package controller;
+
+/**
+ * 
+ * @author Capki Kim
+ * 
+ * The main interface for the average user will consist of a dashboard that lists 
+ * all the workflows that that user is involved in. If the user is an ¡°initializer¡±, 
+ * or a person that can instantiate a workflow such as a student requesting an SPN number, 
+ * that user will have a request button on the interface. The workflow programmer will 
+ * specify whether a certain user type will have the functionality to start a workflow and 
+ * also to be able to approve/reject incoming forms. 
+ */
+
+public class DashboardController {
+
+}

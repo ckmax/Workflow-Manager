@@ -1,0 +1,7 @@
+package model;
+
+public class EndState extends State {
+
+    //Same as state except no connections entering
+
+}

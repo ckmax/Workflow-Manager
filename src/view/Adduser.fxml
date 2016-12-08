@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="332.0" prefWidth="310.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddUserController">
+   <children>
+      <Text layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add User">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Separator layoutX="14.0" layoutY="45.0" prefWidth="120.0" />
+      <Label layoutX="13.0" layoutY="103.0" text="Name" />
+      <TextField fx:id="nameTF" layoutX="81.0" layoutY="99.0" />
+      <Label layoutX="13.0" layoutY="242.0" prefHeight="17.0" prefWidth="32.0" text="Role" />
+      <Button layoutX="193.0" layoutY="282.0" mnemonicParsing="false" onAction="#addUserBtn" text="Add" />
+      <Button layoutX="244.0" layoutY="282.0" mnemonicParsing="false" onAction="#cancelBtn" text="Cancel" />
+      <Label layoutX="13.0" layoutY="140.0" prefHeight="17.0" prefWidth="76.0" text="Username" />
+      <Label layoutX="12.0" layoutY="174.0" prefHeight="17.0" prefWidth="66.0" text="Password" />
+      <TextField fx:id="usernameTF" layoutX="81.0" layoutY="136.0" />
+      <TextField fx:id="passwordTF" layoutX="81.0" layoutY="170.0" />
+      <ComboBox fx:id="usertypeCB" layoutX="82.0" layoutY="238.0" prefWidth="150.0" />
+      <Label layoutX="13.0" layoutY="209.0" prefHeight="17.0" prefWidth="32.0" text="Email" />
+      <TextField fx:id="emailTF" layoutX="82.0" layoutY="205.0" />
+   </children>
+</AnchorPane>

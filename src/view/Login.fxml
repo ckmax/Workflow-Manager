@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="loginStage" prefHeight="330.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+   <children>
+      <Text layoutX="126.0" layoutY="115.0" strokeType="OUTSIDE" strokeWidth="0.0" text="codeflow" wrappingWidth="153.16796875">
+         <font>
+            <Font size="34.0" />
+         </font>
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+         </effect>
+      </Text>
+      <Text layoutX="176.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Name" wrappingWidth="153.16796875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <TextField fx:id="username" layoutX="176.0" layoutY="177.0" />
+      <Text layoutX="176.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="153.16796875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <TextField fx:id="password" layoutX="174.0" layoutY="238.0" />
+      <Button layoutX="279.0" layoutY="285.0" mnemonicParsing="false" text="Login" onAction="#loginButton" />
+   </children>
+</AnchorPane>

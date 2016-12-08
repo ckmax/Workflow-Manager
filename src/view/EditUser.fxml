@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="281.0" prefWidth="310.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EditUserController">
+   <children>
+      <Text layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit User">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Separator layoutX="14.0" layoutY="45.0" prefWidth="120.0" />
+      <Label layoutX="35.0" layoutY="73.0" text="Name" />
+      <TextField fx:id="nameTF" layoutX="81.0" layoutY="69.0" />
+      <Label layoutX="35.0" layoutY="146.0" prefHeight="17.0" prefWidth="32.0" text="Role" />
+      <Button fx:id="saveBtn" layoutX="181.0" layoutY="232.0" mnemonicParsing="false" onAction="#editUserBtn" text="Save" />
+      <Button fx:id="CancelBtn" layoutX="237.0" layoutY="232.0" mnemonicParsing="false" onAction="#cancelBtn" text="Cancel" />
+      <ComboBox fx:id="usertypeCB" layoutX="81.0" layoutY="142.0" prefWidth="150.0" />
+      <TextField fx:id="emailTF" layoutX="81.0" layoutY="105.0" />
+      <Label layoutX="35.0" layoutY="109.0" text="Email" />
+   </children>
+</AnchorPane>

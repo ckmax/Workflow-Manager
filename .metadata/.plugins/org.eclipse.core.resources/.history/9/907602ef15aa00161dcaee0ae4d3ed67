@@ -1,0 +1,16 @@
+package controller;
+
+/**
+ * 
+ * @author Capki Kim
+ *
+ * The admin page will have a dashboard of all the instantiated users that have access to the workflow system. 
+ * This interface will consist of three buttons that will either add, remove, or edit a user. 
+ * This dashboard will later be upgraded as time permits to allow additional functionalities 
+ * such as a profile page when you double click on a user.
+ *
+ */
+
+public class AdminController {
+
+}
