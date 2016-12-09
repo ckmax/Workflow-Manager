@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="354.0" prefWidth="328.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MultipleFormController">
+   <center>
+      <TableView fx:id="multipleFormTV" prefHeight="354.0" prefWidth="183.0" BorderPane.alignment="CENTER">
+        <columns>
+        </columns>
+      </TableView>
+   </center>
+   <bottom>
+      <Button fx:id="submitB" mnemonicParsing="false" text="Submit" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>
