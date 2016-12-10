@@ -19,22 +19,24 @@ public final class UserManager {
      *         1 if there's already a user with the same username
      *         2 if password is illegal
 	 */
-	public static int createUser(String username, String password, String userType, String email){
+	public static void createUser(String username, String password, String userType, String email)
+        throws DuplicateUserException,
+            IllegalPasswordException
+    {
         if (userHashMap == null) {
             userHashMap = new HashMap<>();
         }
 
         if (userHashMap.containsKey(username)) {
-            return 1;
+            throw new DuplicateUserException();
         }
 
         if (isIllegalPassword(password)) {
-            return 2;
+            throw new IllegalPasswordException();
         }
 
         User newUser = new User(username, password, userType, email);
         userHashMap.put(username, newUser);
-        return 0;
 	}
 	
 	/**
@@ -44,17 +46,19 @@ public final class UserManager {
      *         1 if no user has the provided username
      *         -1 if there's no user at all
 	 */
-	public static int removeUser(String username){
+	public static void removeUser(String username)
+        throws EmptyDatabaseException,
+            UserNotFoundException
+    {
 		if (userHashMap == null) {
-            return -1;
+            throw new EmptyDatabaseException();
         }
 
         if (!userHashMap.containsKey(username)) {
-            return 1;
+            throw new UserNotFoundException();
         }
 
         userHashMap.remove(username);
-        return 0;
 	}
 	
 	/**
@@ -66,20 +70,21 @@ public final class UserManager {
      *         1 if no user has the provided username
      *         -1 if there's no user at all
 	 */
-	public static int editInfo(String username, String userType, String email){
+	public static void editInfo(String username, String userType, String email)
+        throws EmptyDatabaseException,
+            UserNotFoundException
+    {
 		if (userHashMap == null) {
-            return -1;
+            throw new EmptyDatabaseException();
         }
 
         if (!userHashMap.containsKey(username)) {
-			return 1;
+			throw new UserNotFoundException();
 		}
 
 		User user = userHashMap.get(username);
 		user.resetUserType(userType);
 		user.resetEmail(email);
-
-        return 0;
 	}
 
     /**
@@ -92,20 +97,22 @@ public final class UserManager {
      *         2 if the password is wrong
      *         -1 if there's no user at all
      */
-	public static int editPassword(String username, String oldPassword, String newPassword) {
+	public static void editPassword(String username, String oldPassword, String newPassword)
+        throws EmptyDatabaseException,
+            UserNotFoundException,
+            IncorrectPasswordException
+    {
         if (userHashMap == null) {
-            return -1;
+            throw new EmptyDatabaseException();
         }
 
         if (!userHashMap.containsKey(username)) {
-            return 1;
+            throw new UserNotFoundException();
         }
 
         if (!userHashMap.get(username).resetPassword(oldPassword, newPassword)) {
-            return 2;
+            throw new IncorrectPasswordException();
         }
-
-        return 0;
     }
 	
 	/**
@@ -118,36 +125,32 @@ public final class UserManager {
      *         3 if the user is already logged in
      *         -1 if there's no user at all
 	 */
-	public static User int login(String username, String password){
+	public static User login(String username, String password)
+        throws EmptyDatabaseException,
+            UserNotFoundException,
+            LoginStatusMismatchException,
+            IncorrectPasswordException
+    {
         if (userHashMap == null) {
-            return -1;
+            throw new EmptyDatabaseException();
         }
 
         if (!userHashMap.containsKey(username)) {
-            return 1;
+            throw new UserNotFoundException();
         }
 
 	    User user = userHashMap.get(username);
 
         if (user.isLoggedIn()) {
-            return 3;
+            throw new LoginStatusMismatchException();
         }
 
         if (!user.login(password)) {
-            return 2;
+            throw new IncorrectPasswordException();
         }
 
-        return 0;
+        return user;
 	}
-
-    /**
-     *
-     * @param username
-     * @return
-     */
-	public static User getUser(String username) {
-
-    }
 	
 	/**
 	 * Logout
@@ -157,23 +160,26 @@ public final class UserManager {
      *         3 if the user is not logged in
      *         -1 if there's no user at all
 	 */
-	public static int logout(String username){
+	public static void logout(String username)
+        throws EmptyDatabaseException,
+            UserNotFoundException,
+            LoginStatusMismatchException
+    {
         if (userHashMap == null) {
-            return -1;
+            throw new EmptyDatabaseException();
         }
 
         if (!userHashMap.containsKey(username)) {
-            return 1;
+            throw new UserNotFoundException();
         }
 
 		User user = userHashMap.get(username);
 
         if (!user.isLoggedIn()) {
-            return 3;
+            throw new LoginStatusMismatchException();
         }
 
         user.logout();
-        return 0;
 	}
 
     /**
@@ -181,7 +187,7 @@ public final class UserManager {
      * @return
      */
 	public List<String> getUserTypes() {
-
+        return null;
     }
 
     /**
