@@ -3,6 +3,8 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -12,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import model.User;
 
 public class FormController implements Initializable {
 
@@ -43,6 +44,24 @@ public class FormController implements Initializable {
 	    
 	    Button submit = new Button("Submit");
 	    Button cancel = new Button("Cancel");
+	    
+	    //Set click handlers
+	    
+	    submit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	MultipleFormController.formStage.close();
+            	
+            	
+            }
+        });
+	    
+	    cancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	MultipleFormController.formStage.close();
+            }
+        });
 	    
 	    hbox.setSpacing(5);
 	    hbox.getChildren().addAll(submit, cancel);
