@@ -6,14 +6,22 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public final class WorkflowManager {
 
     private static HashMap<String, WorkflowInstance> workflowInstanceHashMap = null;
+    private static String xmlLocation = "";
+    private static String userCodeLocation = "";
 	
 	/**
 	 *  Parse the XML file, get a Document object and create a Workflow instance from the Document
@@ -78,8 +86,40 @@ public final class WorkflowManager {
 	 * @param t
 	 * @return
 	 */
-	public static boolean invokeProgrammerMethod(Token t, String packageName, String className, String methodName, Class<?> parameters){
-		return false;
+	public static boolean invokeProgrammerMethod(Token t, String packageName, String className, String methodName, String[] parametersClassNames, Object... parameters)
+        throws MalformedURLException,
+            ClassNotFoundException,
+            NoSuchMethodException,
+            InstantiationException,
+            IllegalAccessException,
+            InvocationTargetException
+    {
+		File file = new File(userCodeLocation);
+
+		URL url = file.toURI().toURL();
+        URL[] urls = new URL[] {url};
+
+        ClassLoader cl = new URLClassLoader(urls);
+
+        String name;
+        if (packageName.isEmpty()) {
+            name = className;
+        } else {
+            name = packageName + "." + className;
+        }
+
+        Class aClass = cl.loadClass(name);
+
+        ArrayList<Class> classList = new ArrayList<>();
+        for (String s : parametersClassNames) {
+            classList.add(Class.forName(s));
+        }
+
+        Method method = aClass.getMethod(methodName, classList.toArray(new Class[classList.size()]));
+
+        method.invoke(aClass.newInstance(), parameters);
+
+	    return false;
 	}
 	
 	/**
@@ -105,9 +145,13 @@ public final class WorkflowManager {
 	 * @param wfi
 	 * @return
 	 */
-	public static List<Form> getForms(WorkflowInstance wfi) {
+	public static List<Form> getForms(User user, WorkflowInstance wfi) {
 	    List<Form> forms = new ArrayList<>();
-	    wfi.getCurrentStates().forEach(state -> forms.addAll(state.getForms()));
+	    wfi.getCurrentStates().forEach(state -> {
+	        if (state.getUserType().equals(user.getUserType())) {
+                forms.addAll(state.getForms());
+            }
+        });
         return forms;
     }
 
