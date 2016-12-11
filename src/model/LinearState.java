@@ -11,9 +11,4 @@ public class LinearState extends State implements Serializable {
     public LinearState(String id, String userType, List<Form> forms, List<ProgrammerCode> programmerCodes) {
         super(id, userType, forms, programmerCodes);
     }
-
-    @Override
-    public List<State> getNextStates(WorkflowInstance wfi) {
-        return null;
-    }
 }

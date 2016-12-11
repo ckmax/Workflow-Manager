@@ -1,7 +1,7 @@
 package model;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.*;
 
 public class WorkflowStructure implements Serializable {
 	
@@ -24,6 +24,16 @@ public class WorkflowStructure implements Serializable {
 
     public State getState(String id) {
         return stateHashMap.get(id);
+    }
+
+    public Set<State> getNextStates(String id) {
+        Set<State> nextStates = new HashSet<>();
+        connectionHashMap.forEach((s, connection) -> {
+            if (connection.getOrigins().contains(getState(id))) {
+                nextStates.addAll(connection.getDestinations());
+            }
+        });
+        return nextStates;
     }
 
     public Connection getConnection(String id) {

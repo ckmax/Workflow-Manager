@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public abstract class State implements Serializable {
 	
@@ -46,5 +47,7 @@ public abstract class State implements Serializable {
         return true;
     }
 
-    public abstract List<State> getNextStates(WorkflowInstance wfi);
+    public Set<State> getNextStates(WorkflowInstance wfi) {
+        return wfi.getWorkflowStructure().getNextStates(this.id);
+    }
 }
