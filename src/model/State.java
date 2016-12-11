@@ -1,19 +1,40 @@
 package model;
 
-import java.sql.Connection;
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.List;
 
-public class State {
+public abstract class State implements Serializable {
 	
-	String name_id;
-    //A hashmap of all connections coming off this state. String key is connection name_id
-	Hashmap<String, Connection>ConnectionsLeaving;
-	//A hashmap of all connections coming into this state. String key is connection name_id    
-	Hashmap<String, Connection>;
-	//All tokens within this state
-    ArrayList<Token> Tokens;
-    //Check to see if token can be moved from one state to another
-    boolean checkIfCanMoveToken();
+	private String id;
+	private String userType;
+    private List<Form> forms;
 
+    public State(String id, String userType, List<Form> forms) {
+        this.id = id;
+        this.userType = userType;
+        this.forms = forms;
+    }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public List<Form> getForms() {
+        return forms;
+    }
+
+    public boolean checkIfCanLeave() {
+        for (Form form : forms) {
+            if (!form.isCompleted()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public abstract boolean checkIfCanEnter();
 }

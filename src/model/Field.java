@@ -1,6 +1,8 @@
 package model;
 
-public class Field {
+import java.io.Serializable;
+
+public class Field implements Serializable {
     private String name;
     private String value;
     private String type;
@@ -26,4 +28,5 @@ public class Field {
     public void setValue(String value) {
         this.value = value;
     }
+
 }

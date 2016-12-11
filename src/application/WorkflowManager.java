@@ -15,20 +15,19 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public final class WorkflowManager {
 
-    private static HashMap<String, WorkflowInstance> workflowInstanceHashMap = null;
+    private static HashMap<Integer, WorkflowInstance> workflowInstanceHashMap = null;
     private static String xmlLocation = "";
     private static String userCodeLocation = "";
 	
 	/**
-	 *  Parse the XML file, get a Document object and create a Workflow instance from the Document
+	 * Parse the XML file, get a Document object and create a Workflow instance from the Document
 	 * @param filePath
 	 * @return
 	 */
-	public static WorkflowInstance instantiate(String filePath){
+	public static Integer instantiate(User user, String filePath){
 		if (workflowInstanceHashMap == null) {
             workflowInstanceHashMap = new HashMap<>();
         }
@@ -46,9 +45,24 @@ public final class WorkflowManager {
 		    e.printStackTrace();
         }
 
-        return null;
+        WorkflowInstance wfi = null;
+
+        user.addWorkflow(wfi);
+
+        Integer workflowID = assignWorkflowID();
+        workflowInstanceHashMap.put(workflowID, wfi);
+
+        return workflowID;
 	}
-	
+
+    /**
+     * Get a workflowInstance from id
+     * @param id
+     * @return
+     */
+    public static WorkflowInstance getWorkflowInstance(Integer id) {
+	    return workflowInstanceHashMap.get(id);
+    }
 	
 	/**
 	 * 
@@ -128,8 +142,8 @@ public final class WorkflowManager {
 	 * This will be done as time permits.
 	 * @return
 	 */
-	public static void notifyUser(){
-		return;
+	public static void notifyUser(User sender, User receiver, String text){
+
 	}
 	
 	/**
