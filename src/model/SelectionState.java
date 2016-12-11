@@ -1,8 +1,12 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ControlBranchState extends State {
+/**
+ * Created by Derek on 12/5/16.
+ */
+public class SelectionState extends State {
 	//INHERITED
 	//form required to move to next state
 	//FormType requiredForm;
@@ -29,10 +33,12 @@ public class ControlBranchState extends State {
 //		return new Form(fields);
 //	}
 	
+	Form stateChoiceForm;
+	
 	//Multiple next states
 	List<State> nextStates;
 	
-	public ControlBranchState(String nameid, FormType requiredForm, boolean isStartState){
+	public SelectionState(String nameid, FormType requiredForm, boolean isStartState){
 		this.name_id = nameid;
 		this.requiredForm = requiredForm;
 		this.isStartState = isStartState;
@@ -41,5 +47,5 @@ public class ControlBranchState extends State {
 	public void setNextStates(List<State> nextStates){
 		this.nextStates = nextStates;
 	}
-	
+	//TODO need a method to create a Form that allows a choice of state
 }

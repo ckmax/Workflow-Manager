@@ -1,8 +1,10 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
-public class ControlBranchState extends State {
+public class LinearState extends State{
 	//INHERITED
 	//form required to move to next state
 	//FormType requiredForm;
@@ -29,17 +31,17 @@ public class ControlBranchState extends State {
 //		return new Form(fields);
 //	}
 	
-	//Multiple next states
-	List<State> nextStates;
+	//Only one next state for linear state
+	State nextState;
 	
-	public ControlBranchState(String nameid, FormType requiredForm, boolean isStartState){
+	public LinearState(String nameid, FormType requiredForm, boolean isStartState){
 		this.name_id = nameid;
 		this.requiredForm = requiredForm;
 		this.isStartState = isStartState;
 	}
 	
-	public void setNextStates(List<State> nextStates){
-		this.nextStates = nextStates;
+	public void setNextState(State nextState){
+		this.nextState = nextState;
 	}
 	
 }
