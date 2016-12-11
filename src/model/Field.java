@@ -29,4 +29,12 @@ public class Field implements Serializable {
         this.value = value;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Field)) {
+            return false;
+        }
+        Field field = (Field) obj;
+        return this.name.equals(field.name) && this.type.equals(field.type);
+    }
 }

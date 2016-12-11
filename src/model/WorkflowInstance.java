@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkflowInstance {
+public class WorkflowInstance implements Serializable {
 
     private final int id;
 

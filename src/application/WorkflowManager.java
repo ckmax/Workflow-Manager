@@ -100,7 +100,7 @@ public final class WorkflowManager {
 	 * @param t
 	 * @return
 	 */
-	public static boolean invokeProgrammerMethod(Token t, String packageName, String className, String methodName, String[] parametersClassNames, Object... parameters)
+	public static boolean invokeProgrammerMethod(Token t, String packageName, String className, String methodName, Object... parameters)
         throws MalformedURLException,
             ClassNotFoundException,
             NoSuchMethodException,
@@ -122,11 +122,11 @@ public final class WorkflowManager {
             name = packageName + "." + className;
         }
 
-        Class aClass = cl.loadClass(name);
+        Class<?> aClass = cl.loadClass(name);
 
         ArrayList<Class> classList = new ArrayList<>();
-        for (String s : parametersClassNames) {
-            classList.add(Class.forName(s));
+        for (Object object : parameters) {
+            classList.add(object.getClass());
         }
 
         Method method = aClass.getMethod(methodName, classList.toArray(new Class[classList.size()]));

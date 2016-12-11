@@ -27,8 +27,8 @@ public abstract class State implements Serializable {
         return forms;
     }
 
-    public boolean checkIfCanLeave() {
-        for (Form form : forms) {
+    public boolean checkIfCanLeave(WorkflowInstance wfi) {
+        for (Form form : wfi.getForms()) {
             if (!form.isCompleted()) {
                 return false;
             }
@@ -36,5 +36,9 @@ public abstract class State implements Serializable {
         return true;
     }
 
-    public abstract boolean checkIfCanEnter();
+    public boolean checkIfCanEnter(WorkflowInstance wfi) {
+        return true;
+    }
+
+    public abstract List<State> getNextStates(WorkflowInstance wfi);
 }

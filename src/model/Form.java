@@ -52,4 +52,25 @@ public class Form implements Serializable{
     public Form deepClone() {
         return SerializationUtils.clone(this);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Form)) {
+            return false;
+        }
+
+        Form form = (Form) obj;
+
+        if (this.fields.size() != form.fields.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < this.fields.size(); i++) {
+            if (!this.fields.get(i).equals(form.fields.get(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

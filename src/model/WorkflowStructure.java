@@ -1,17 +1,32 @@
 package model;
 
-import java.sql.Connection;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class WorkflowStructure {
+public class WorkflowStructure implements Serializable {
 	
-	//Key value is name of state
-    //Second value is state associated with that name
-    HashMap<String, State> States;
-    //String is connection name key and Connection is actual connection
-    HashMap<String, Connection> Connections;
-    //A list of specific start states
-    ArrayList<StartState> StartStates;
+    private HashMap<String, State> stateHashMap;
 
+    private HashMap<String, Connection> connectionHashMap;
+
+    public WorkflowStructure(String[] stateIDs, State[] states, String[] connectionIDs, Connection[] connections) {
+        stateHashMap = new HashMap<>();
+        connectionHashMap = new HashMap<>();
+
+        for (int i = 0; i < states.length; i++) {
+            stateHashMap.put(stateIDs[i], states[i]);
+        }
+
+        for (int i = 0; i < connections.length; i++) {
+            connectionHashMap.put(connectionIDs[i], connections[i]);
+        }
+    }
+
+    public State getState(String id) {
+        return stateHashMap.get(id);
+    }
+
+    public Connection getConnection(String id) {
+        return connectionHashMap.get(id);
+    }
 }
