@@ -1,7 +1,12 @@
 package application;
 
 import model.User;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +16,7 @@ public final class UserManager {
 
 	/**
 	 * Create new User
+     * @param name person's name
 	 * @param username username
 	 * @param password password
 	 * @param userType user type
@@ -19,7 +25,7 @@ public final class UserManager {
      *         1 if there's already a user with the same username
      *         2 if password is illegal
 	 */
-	public static void createUser(String username, String password, String userType, String email)
+	public static void createUser(String name, String username, String password, String userType, String email)
         throws DuplicateUserException,
             IllegalPasswordException
     {
@@ -35,7 +41,7 @@ public final class UserManager {
             throw new IllegalPasswordException();
         }
 
-        User newUser = new User(username, password, userType, email);
+        User newUser = new User(name, username, password, userType, email);
         userHashMap.put(username, newUser);
 	}
 	
@@ -63,6 +69,7 @@ public final class UserManager {
 	
 	/**
 	 * Edit a current user's general information
+     * @param name person's name
 	 * @param username username
 	 * @param userType user type
 	 * @param email email address
@@ -70,7 +77,7 @@ public final class UserManager {
      *         1 if no user has the provided username
      *         -1 if there's no user at all
 	 */
-	public static void editInfo(String username, String userType, String email)
+	public static void editInfo(String name, String username, String userType, String email)
         throws EmptyDatabaseException,
             UserNotFoundException
     {
@@ -83,6 +90,7 @@ public final class UserManager {
 		}
 
 		User user = userHashMap.get(username);
+		user.resetName(name);
 		user.resetUserType(userType);
 		user.resetEmail(email);
 	}
@@ -184,10 +192,33 @@ public final class UserManager {
 
     /**
      * Return all possible user types
-     * @return
+     * @param filePath the path of the xml file
+     * @return List of String of user types
      */
-	public List<String> getUserTypes() {
-        return null;
+	public List<String> getUserTypes(String filePath) {
+        List<String> userTypeList = new ArrayList<>();
+        try {
+            File xmlFile = new File(filePath);
+
+            SAXBuilder saxBuilder = new SAXBuilder();
+
+            Document document = saxBuilder.build(xmlFile);
+
+            Element workflowElement = document.getRootElement();
+
+            Element users = workflowElement.getChild("users");
+
+            List<Element> userTypes = users.getChildren();
+
+            for (Element element : userTypes) {
+                userTypeList.add(element.getChild("name").getText());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return userTypeList;
     }
 
     /**

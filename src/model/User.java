@@ -1,9 +1,11 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
 
+    private String name; // person's name
 	private String username;
     private String password;
     private String userType;
@@ -11,12 +13,18 @@ public class User {
     private boolean loggedIn;
     private List<WorkflowInstance> involvesIn;
 
-    public User(String username, String password, String userType, String email) {
+    public User(String name, String username, String password, String userType, String email) {
+        this.name = name;
         this.username = username;
         this.password = password;
         this.userType = userType;
         this.email = email;
         this.loggedIn = false;
+        involvesIn = new ArrayList<>();
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public String getUsername() {
@@ -29,6 +37,14 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public List<WorkflowInstance> getInvolvesIn() {
+        return this.involvesIn;
+    }
+
+    public void resetName(String name) {
+        this.name = name;
     }
 
     public boolean resetPassword(String oldPassword, String newPassword) {
@@ -46,6 +62,10 @@ public class User {
 
     public void resetEmail(String email) {
         this.email = email;
+    }
+
+    public void addWorkflow(WorkflowInstance wfi) {
+        involvesIn.add(wfi);
     }
 
     public boolean isLoggedIn() {
