@@ -5,9 +5,9 @@ import java.util.List;
 
 public abstract class State implements Serializable {
 	
-	private String id;
-	private String userType;
-    private List<Form> forms;
+	protected String id;
+	protected String userType;
+    protected List<Form> forms;
 
     public State(String id, String userType, List<Form> forms) {
         this.id = id;
@@ -27,7 +27,7 @@ public abstract class State implements Serializable {
         return forms;
     }
 
-    public boolean checkIfCanLeave(WorkflowInstance wfi) {
+    public boolean canLeave(WorkflowInstance wfi) {
         for (Form form : wfi.getForms()) {
             if (!form.isCompleted()) {
                 return false;
@@ -36,7 +36,7 @@ public abstract class State implements Serializable {
         return true;
     }
 
-    public boolean checkIfCanEnter(WorkflowInstance wfi) {
+    public boolean canEnter(WorkflowInstance wfi) {
         return true;
     }
 

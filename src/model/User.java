@@ -11,6 +11,7 @@ public class User implements Serializable {
     private String password;
     private String userType;
     private String email;
+    private List<String> messages;
     private boolean loggedIn;
     private List<WorkflowInstance> involvesIn;
 
@@ -20,6 +21,7 @@ public class User implements Serializable {
         this.password = password;
         this.userType = userType;
         this.email = email;
+        messages = new ArrayList<>();
         this.loggedIn = false;
         involvesIn = new ArrayList<>();
     }
@@ -38,6 +40,10 @@ public class User implements Serializable {
 
     public String getEmail() {
         return email;
+    }
+
+    public List<String> getMessages() {
+        return messages;
     }
 
     public List<WorkflowInstance> getInvolvesIn() {
@@ -63,6 +69,10 @@ public class User implements Serializable {
 
     public void resetEmail(String email) {
         this.email = email;
+    }
+
+    public void addMessage(String message) {
+        this.messages.add(message);
     }
 
     public void addWorkflow(WorkflowInstance wfi) {

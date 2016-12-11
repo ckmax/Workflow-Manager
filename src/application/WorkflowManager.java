@@ -1,6 +1,9 @@
 package application;
 
-import model.*;
+import model.Form;
+import model.State;
+import model.User;
+import model.WorkflowInstance;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -12,9 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public final class WorkflowManager {
 
@@ -60,7 +61,7 @@ public final class WorkflowManager {
      * @param id
      * @return
      */
-    public static WorkflowInstance getWorkflowInstance(Integer id) {
+    public static WorkflowInstance getWorkflowInstance(int id) {
 	    return workflowInstanceHashMap.get(id);
     }
 	
@@ -70,37 +71,54 @@ public final class WorkflowManager {
 	 * call notify to email the appropriate users
 	 * @param wfi
 	 */
-	public static void transition(WorkflowInstance wfi){
-		List<State> states = wfi.getCurrentStates();
-		for (State state : states) {
-		    if (state.)
+	public static boolean transition(WorkflowInstance wfi){
+		if (checkTransSrc(wfi) && checkTransDest(wfi)) {
+		    wfi.nextStates();
+		    return true;
         }
+        return false;
 	}
 	
 	/**
-	 * 	Check if the token can be moved to the next state
-	 * @param t
+	 * Check if the end user has done everything required to do in current state(s)
+	 * @param wfi
 	 * @return
 	 */
-	public static boolean checkTransSrc(Token t){
-		return t.getCurrentState().checkIfCanMove();
+	public static boolean checkTransSrc(WorkflowInstance wfi){
+        Set<State> states = wfi.getCurrentStates();
+        for (State state : states) {
+            if (!state.canLeave(wfi)) {
+                return false;
+            }
+        }
+        return true;
 	}
 	
 	/**
-	 * Check if the destination state is ready to accept the token
-	 * @param t
+	 * Check if the end user has done everything in all previous state(s)
+	 * @param wfi
 	 * @return
 	 */
-	public static boolean checkTransDest(Token t){
-		return t.getNextState().checkIfCanAccept();
+	public static boolean checkTransDest(WorkflowInstance wfi){
+        Set<State> nextStates = new HashSet<>();
+        wfi.getCurrentStates().forEach(state -> nextStates.addAll(state.getNextStates(wfi)));
+        for (State state : nextStates) {
+            if (!state.canEnter(wfi)) {
+                return false;
+            }
+        }
+        return true;
 	}
 	
 	/**
 	 * Invoke java method provided by wf programmer
-	 * @param t
+	 * @param packageName
+     * @param className
+     * @param methodName
+     * @param args
 	 * @return
 	 */
-	public static boolean invokeProgrammerMethod(Token t, String packageName, String className, String methodName, Object... parameters)
+	public static boolean invokeProgrammerMethod(String packageName, String className, String methodName, Object... args)
         throws MalformedURLException,
             ClassNotFoundException,
             NoSuchMethodException,
@@ -125,13 +143,13 @@ public final class WorkflowManager {
         Class<?> aClass = cl.loadClass(name);
 
         ArrayList<Class> classList = new ArrayList<>();
-        for (Object object : parameters) {
+        for (Object object : args) {
             classList.add(object.getClass());
         }
 
         Method method = aClass.getMethod(methodName, classList.toArray(new Class[classList.size()]));
 
-        method.invoke(aClass.newInstance(), parameters);
+        method.invoke(aClass.newInstance(), args);
 
 	    return false;
 	}
@@ -142,8 +160,8 @@ public final class WorkflowManager {
 	 * This will be done as time permits.
 	 * @return
 	 */
-	public static void notifyUser(User sender, User receiver, String text){
-
+	public static void notifyUser(User receiver, String message){
+        receiver.addMessage(message);
 	}
 	
 	/**

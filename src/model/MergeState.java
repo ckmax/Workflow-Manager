@@ -16,12 +16,15 @@ public class MergeState extends State implements Serializable {
     }
 
     @Override
-    public boolean checkIfCanLeave(WorkflowInstance wfi) {
+    public boolean canLeave(WorkflowInstance wfi) {
+        if (this.done(wfi) && ((MergeState) wfi.getWorkflowStructure().getState(this.pairedStateID)).done(wfi)) {
+            return true;
+        }
         return false;
     }
 
     private boolean done(WorkflowInstance wfi) {
-        return super.checkIfCanLeave(wfi);
+        return super.canLeave(wfi);
     }
 
     @Override

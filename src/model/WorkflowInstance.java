@@ -2,7 +2,9 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WorkflowInstance implements Serializable {
 
@@ -10,18 +12,15 @@ public class WorkflowInstance implements Serializable {
 
     private final WorkflowStructure workflowStructure;
 
-    private List<State> currentStates;
+    private Set<State> currentStates;
 
     private List<Form> forms;
-
-    private List<Token> tokens;
 
     public WorkflowInstance(WorkflowStructure workflowStructure, int id) {
         this.workflowStructure = workflowStructure;
         this.id = id;
-        this.currentStates = new ArrayList<>();
+        this.currentStates = new HashSet<>();
         this.forms = new ArrayList<>();
-        this.tokens = new ArrayList<>();
     }
 
     public WorkflowStructure getWorkflowStructure() {
@@ -32,15 +31,17 @@ public class WorkflowInstance implements Serializable {
         return id;
     }
 
-    public List<State> getCurrentStates() {
+    public Set<State> getCurrentStates() {
         return currentStates;
+    }
+
+    public void nextStates() {
+        Set<State> nextStates = new HashSet<>();
+        this.currentStates.forEach(state -> nextStates.addAll(state.getNextStates(this)));
+        this.currentStates = nextStates;
     }
 
     public List<Form> getForms() {
         return forms;
-    }
-
-    public List<Token> getTokens() {
-        return tokens;
     }
 }
