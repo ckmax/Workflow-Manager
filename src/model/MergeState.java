@@ -10,8 +10,8 @@ public class MergeState extends State implements Serializable {
 
     private final String pairedStateID;
 
-    public MergeState(String id, String userType, List<Form> forms, String pairedStateID) {
-        super(id, userType, forms);
+    public MergeState(String id, String userType, List<Form> forms, List<ProgrammerCode> programmerCodes, String pairedStateID) {
+        super(id, userType, forms, programmerCodes);
         this.pairedStateID = pairedStateID;
     }
 

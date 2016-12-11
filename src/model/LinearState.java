@@ -8,8 +8,8 @@ import java.util.List;
  */
 public class LinearState extends State implements Serializable {
 
-    public LinearState(String id, String userType, List<Form> forms) {
-        super(id, userType, forms);
+    public LinearState(String id, String userType, List<Form> forms, List<ProgrammerCode> programmerCodes) {
+        super(id, userType, forms, programmerCodes);
     }
 
     @Override

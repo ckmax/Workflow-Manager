@@ -8,8 +8,8 @@ import java.util.List;
  */
 public class SelectionState extends State implements Serializable {
 
-    public SelectionState(String id, String userType, List<Form> forms) {
-        super(id, userType, forms);
+    public SelectionState(String id, String userType, List<Form> forms, List<ProgrammerCode> programmerCodes) {
+        super(id, userType, forms, programmerCodes);
     }
 
     @Override

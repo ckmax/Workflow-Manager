@@ -8,8 +8,8 @@ import java.util.List;
  */
 public class BranchState extends State implements Serializable {
 
-    public BranchState(String id, String userType, List<Form> forms) {
-        super(id, userType, forms);
+    public BranchState(String id, String userType, List<Form> forms, List<ProgrammerCode> programmerCodes) {
+        super(id, userType, forms, programmerCodes);
     }
 
     @Override

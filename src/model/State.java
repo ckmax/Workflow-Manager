@@ -8,11 +8,13 @@ public abstract class State implements Serializable {
 	protected String id;
 	protected String userType;
     protected List<Form> forms;
+    protected List<ProgrammerCode> programmerCodes;
 
-    public State(String id, String userType, List<Form> forms) {
+    public State(String id, String userType, List<Form> forms, List<ProgrammerCode> programmerCodes) {
         this.id = id;
         this.userType = userType;
         this.forms = forms;
+        this.programmerCodes = programmerCodes;
     }
 
     public String getId() {
@@ -25,6 +27,10 @@ public abstract class State implements Serializable {
 
     public List<Form> getForms() {
         return forms;
+    }
+
+    public List<ProgrammerCode> getProgrammerCodes() {
+        return programmerCodes;
     }
 
     public boolean canLeave(WorkflowInstance wfi) {
