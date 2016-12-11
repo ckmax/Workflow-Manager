@@ -9,13 +9,13 @@ public class Form implements Serializable{
 
 	private String name;
 	private String status;
-    private State belongsTo;
+    private String stateID;
     private boolean completed;
     private List<Field> fields;
 
-    public Form(String name, State state, List<Field> fields) {
+    public Form(String name, String stateID, List<Field> fields) {
         this.name = name;
-        this.belongsTo = state;
+        this.stateID = stateID;
         this.completed = false;
         this.fields = fields;
         this.status = "Not started";
@@ -45,8 +45,8 @@ public class Form implements Serializable{
         return this.completed;
     }
 
-    public State belongsTo () {
-        return belongsTo;
+    public String belongsTo () {
+        return this.stateID;
     }
 
     public Form deepClone() {
