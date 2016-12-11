@@ -16,11 +16,13 @@ public class WorkflowInstance implements Serializable {
 
     private List<Form> forms;
 
-    public WorkflowInstance(WorkflowStructure workflowStructure, int id) {
+    public WorkflowInstance(WorkflowStructure workflowStructure, int id, State startState) {
         this.workflowStructure = workflowStructure;
         this.id = id;
         this.currentStates = new HashSet<>();
+        this.currentStates.add(startState);
         this.forms = new ArrayList<>();
+        startState.getForms().forEach(form -> this.forms.add(form.deepClone()));
     }
 
     public WorkflowStructure getWorkflowStructure() {
@@ -39,6 +41,7 @@ public class WorkflowInstance implements Serializable {
         Set<State> nextStates = new HashSet<>();
         this.currentStates.forEach(state -> nextStates.addAll(state.getNextStates(this)));
         this.currentStates = nextStates;
+        nextStates.forEach(state -> state.getForms().forEach(form -> this.forms.add(form.deepClone())));
     }
 
     public List<Form> getForms() {
