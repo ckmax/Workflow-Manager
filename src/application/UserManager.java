@@ -1,12 +1,14 @@
 package application;
 
 import model.User;
+import model.WorkflowInstance;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -219,6 +221,26 @@ public final class UserManager {
         }
 
         return userTypeList;
+    }
+
+    public static Collection<User> getInvolvesIn(WorkflowInstance wfi) {
+	    Collection<User> users = new ArrayList<>();
+	    userHashMap.forEach((s, user) -> {
+	        if (user.getInvolvesIn().contains(wfi)) {
+	            users.add(user);
+            }
+        });
+	    return users;
+    }
+
+    public static Collection<User> getTypeOf(String userType) {
+        Collection<User> users = new ArrayList<>();
+        userHashMap.forEach((s, user) -> {
+            if (user.getUserType().equals(userType)) {
+                users.add(user);
+            }
+        });
+        return users;
     }
 
     /**

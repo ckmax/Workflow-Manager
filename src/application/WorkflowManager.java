@@ -169,7 +169,10 @@ public final class WorkflowManager {
 	 * @param workflowID
 	 */
 	public static void endWorkflow(int workflowID){
-		return;
+		UserManager.getInvolvesIn(workflowInstanceHashMap.get(workflowID))
+                .forEach(user -> notifyUser(user, workflowID + " is terminated"));
+
+	    return;
 	}
 
 	/**
