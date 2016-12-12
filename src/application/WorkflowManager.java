@@ -19,10 +19,10 @@ import java.util.*;
 
 public final class WorkflowManager {
 
+    public static final String xmlLocation = "";
+    public static final String userCodeLocation = "";
     private static HashMap<Integer, WorkflowInstance> workflowInstanceHashMap = null;
-    private static String xmlLocation = "";
-    private static String userCodeLocation = "";
-	
+
 	/**
 	 * Parse the XML file, get a Document object and create a Workflow instance from the Document
 	 * @param filePath
