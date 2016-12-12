@@ -303,6 +303,9 @@ public final class WorkflowManager {
     }
 
     protected static void updateDataForNewUser(User user) {
+	    if (workflowInstanceHashMap == null) {
+	        return;
+        }
 	    workflowInstanceHashMap.forEach((integer, workflowInstance) -> {
 	        if (workflowInstance.getWorkflowStructure().getUserTypes().contains(user.getUserType())) {
 	            user.addWorkflow(workflowInstance);
