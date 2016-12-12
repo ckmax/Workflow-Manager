@@ -1,12 +1,11 @@
 package application;
-	
-import java.io.File;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * 
@@ -38,8 +37,13 @@ public class Main extends Application {
 			primaryStage.setResizable(false); 
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			selectStructureStage = primaryStage;
-			
-			primaryStage.show();
+
+            primaryStage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+                WorkflowManager.saveWorkflowData();
+                UserManager.saveUserData();
+            });
+
+            primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
