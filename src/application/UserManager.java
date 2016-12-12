@@ -129,6 +129,19 @@ public final class UserManager {
             throw new IncorrectPasswordException();
         }
     }
+
+    /**
+     * for debug
+     */
+    public static void printAll() {
+	    userHashMap.forEach((s, user) -> {
+	        System.out.println("name: " + user.getName());
+	        System.out.println("username: " + user.getUsername());
+	        System.out.println("user type: " + user.getUserType());
+	        System.out.println("email: " + user.getEmail());
+	        System.out.println();
+        });
+    }
 	
 	/**
 	 * Login
