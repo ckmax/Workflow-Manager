@@ -1,12 +1,5 @@
 package controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import application.UserManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,7 +14,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.User;
-import model.UserEntry;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * 
@@ -204,7 +202,7 @@ public class AdminController implements Initializable {
 		
 		System.out.println("name: " + name + " type: " + usertype);
 		System.out.println("Original name: " + userToBeEdited.getName() + " type: " + userToBeEdited.getUserType());
-		
+
 
 		UserManager.editInfo(name, username, usertype, email);
 		

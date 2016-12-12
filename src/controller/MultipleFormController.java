@@ -1,10 +1,5 @@
 package controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import application.WorkflowManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,8 +16,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Form;
-import model.FormEntry;
 import model.WorkflowInstance;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class MultipleFormController implements Initializable {
 	
@@ -39,7 +38,7 @@ public class MultipleFormController implements Initializable {
 		//Call getForms from the WorkflowManager
 		
 		WorkflowInstance wfi = WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId()));
-		
+
 		List<Form> forms = WorkflowManager.getForms(LoginController.currentUser, wfi);
 		
 		//Turn forms to FormEntries
