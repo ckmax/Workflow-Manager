@@ -9,6 +9,9 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -21,7 +24,9 @@ public final class WorkflowManager {
 
     public static final String xmlLocation = "";
     public static final String userCodeLocation = "";
+
     private static HashMap<Integer, WorkflowInstance> workflowInstanceHashMap = null;
+    private static final String dataFilePath = "workflowData.dat";
 
 	/**
 	 * Parse the XML file, get a Document object and create a Workflow instance from the Document
@@ -197,6 +202,17 @@ public final class WorkflowManager {
      */
 	private static int assignWorkflowID() {
         return Instant.now().hashCode();
+    }
+
+    protected static void saveWorkflowData() {
+        try {
+            File file = new File(dataFilePath);
+            file.createNewFile();
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(dataFilePath));
+            oos.writeObject(workflowInstanceHashMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

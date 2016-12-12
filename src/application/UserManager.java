@@ -7,12 +7,17 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 public final class UserManager {
+
+    private static final String dataFilePath = "userData.dat";
 
 	private static HashMap<String, User> userHashMap = null;
 
@@ -251,6 +256,20 @@ public final class UserManager {
      */
 	private static boolean isIllegalPassword(String password) {
         return false;
+    }
+
+    /**
+     * Serialize userHashMap to file
+     */
+    protected static void saveUserData() {
+        try {
+            File file = new File(dataFilePath);
+            file.createNewFile();
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(dataFilePath));
+            oos.writeObject(userHashMap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
