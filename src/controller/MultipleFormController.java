@@ -45,6 +45,25 @@ public class MultipleFormController implements Initializable {
 		
 			
 		data.addAll();
+		
+		setUpColNames();
+	   
+	   
+	   // Set the event when mouse is double clicked
+	   multipleFormTV.setOnMousePressed(new EventHandler<MouseEvent>() {
+		    @Override 
+		    public void handle(MouseEvent event) {
+		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {		            
+		            showForm();
+		            
+		        }
+		    }
+		});
+				
+		
+	}
+	
+	public void setUpColNames(){
 		// Create column entries from the start 
 		TableColumn formName = new TableColumn("Name");
 		
@@ -62,20 +81,6 @@ public class MultipleFormController implements Initializable {
 	   
 	   multipleFormTV.getColumns().addAll(formName,formStatus);
 	   multipleFormTV.setItems(data);
-	   
-	   
-	   // Set the event when mouse is double clicked
-	   multipleFormTV.setOnMousePressed(new EventHandler<MouseEvent>() {
-		    @Override 
-		    public void handle(MouseEvent event) {
-		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {		            
-		            showForm();
-		            
-		        }
-		    }
-		});
-				
-		
 	}
 	
 	public void showForm(){
