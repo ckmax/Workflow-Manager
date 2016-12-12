@@ -25,6 +25,10 @@ public abstract class State implements Serializable {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getUserType() {
         return userType;
     }
