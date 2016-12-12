@@ -35,7 +35,7 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <TextField fx:id="password" layoutX="174.0" layoutY="238.0" />
-      <Button layoutX="279.0" layoutY="285.0" mnemonicParsing="false" text="Login" onAction="#loginButton" />
+      <Button layoutX="279.0" layoutY="285.0" mnemonicParsing="false" onAction="#loginButton" text="Login" />
+      <PasswordField fx:id="password" layoutX="176.0" layoutY="237.0" />
    </children>
 </AnchorPane>
