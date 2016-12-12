@@ -3,11 +3,12 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.UserManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import model.UserEntry;
+import model.User;
 
 public class AddUserController implements Initializable {
 	
@@ -24,9 +25,9 @@ public class AddUserController implements Initializable {
 		
 		// TODO: ERROR CHECK
 		
-		UserEntry user = new UserEntry(nameTF.getText(), (String)usertypeCB.getValue(), emailTF.getText());
-		AdminController.userEntryList.add(user);
+		User user = new User(nameTF.getText(), usernameTF.getText(), passwordTF.getText(), (String)usertypeCB.getValue(), emailTF.getText());
 		
+		UserManager.createUser(nameTF.getText(), usernameTF.getText(), passwordTF.getText(), (String)usertypeCB.getValue(), emailTF.getText());
 		
 		// Create a UserEntry and add it to the observable list
 		AdminController.userList.add(user);		

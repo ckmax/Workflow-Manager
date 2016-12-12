@@ -32,6 +32,8 @@ public class LoginController implements Initializable {
 	@FXML private PasswordField password;
 	@FXML private Text errorMsg;
 	
+	public static String currentUser;
+	
 	public static Stage adminStage;
 	public static Stage dashboardStage;
 		
@@ -97,6 +99,9 @@ public class LoginController implements Initializable {
 					
 				}
 				
+				// If there are no errors, continue to this code
+				
+				currentUser = username.getText();
 				
 				try{
 					FXMLLoader loader = new FXMLLoader();

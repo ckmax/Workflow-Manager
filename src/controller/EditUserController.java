@@ -45,7 +45,7 @@ public class EditUserController implements Initializable {
 		
 		System.out.println(name + " " + type);
 		
-		controller.editUser(name,type,emailTF.getText());				
+		controller.editUser(name, AdminController.userToBeEdited.getUsername(),type,emailTF.getText());				
 		
 		AdminController.editUserStage.close();
 	}
@@ -58,8 +58,12 @@ public class EditUserController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-        
-        usertypeCB.setItems(AdminController.usertypeList);
+		
+		usertypeCB.setItems(AdminController.usertypeList);
+		
+		nameTF.setText(AdminController.userToBeEdited.getName());
+		emailTF.setText(AdminController.userToBeEdited.getEmail());
+		usertypeCB.setValue(AdminController.userToBeEdited.getUserType());
         
        		
 	}

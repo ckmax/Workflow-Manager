@@ -38,17 +38,21 @@ public class AdminController implements Initializable {
 	
 	public static Stage editUserStage;
 	public static Stage addUserStage;
+	public static Stage changePasswordStage;
 	
 	public static User userToBeEdited;
 	
-	public static ArrayList<UserEntry> userEntryList = new ArrayList<UserEntry>();
-	
+	public static boolean initialized = false;
+		
 	@FXML
 	private TableView adminTV;
 	
 	@FXML  Text workflowName;
 	
 	public static ObservableList<User> userList = FXCollections.observableArrayList();
+	
+	public  ObservableList<User> tempUserList = FXCollections.observableArrayList();
+
 	
 	public static ObservableList<String> usertypeList = FXCollections.observableArrayList();
 	
@@ -79,7 +83,7 @@ public class AdminController implements Initializable {
 				
 				editUserStage = stage;
 				
-				stage.show(); // Pop-up admin stage
+				stage.show(); // Pop-up editUser stage
 				
 				
 			} catch (IOException e){
@@ -111,12 +115,46 @@ public class AdminController implements Initializable {
 			
 			addUserStage = stage;
 			
-			stage.show(); // Pop-up admin stage
+			stage.show(); // Pop-up addUser stage
 						
 		} catch (IOException e){
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	public void changePasswordBtn(){
+		
+		userToBeEdited = (User) adminTV.getSelectionModel().getSelectedItem();
+		
+		if(userToBeEdited != null){
+		
+			try{
+				
+				FXMLLoader loader = new FXMLLoader();
+				
+				loader.setLocation(getClass().getResource("/view/ChangePassword.fxml"));
+				
+				AnchorPane root = (AnchorPane)loader.load();
+				
+				Stage stage = new Stage();
+				
+				Scene scene = new Scene(root);
+				
+				stage.setScene(scene);
+				stage.setResizable(false);
+				stage.setTitle("Codeflow");
+				
+				changePasswordStage = stage;
+				
+				stage.show(); // Pop-up editUser stage
+				
+				
+			} catch (IOException e){
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -158,68 +196,104 @@ public class AdminController implements Initializable {
 		}
 	}
 	
-	public void editUser(String name, String usertype, String email){
+	public void editUser(String name, String username, String usertype, String email){
 		
 		if(userToBeEdited == null){
 			System.out.println("entry is null");
 		}
 		
-		System.out.println("name: " + name + " type: " + "usertype");
+		System.out.println("name: " + name + " type: " + usertype);
 		System.out.println("Original name: " + userToBeEdited.getName() + " type: " + userToBeEdited.getUserType());
 		
 
-		UserManager.editInfo(name, usertype, email);
+		UserManager.editInfo(name, username, usertype, email);
+		
+		System.out.println("New name: " + userToBeEdited.getName() + " New Type: " + userToBeEdited.getUserType());
 		
 		//Way to update the table after editing
 		
+		for(User u : userList){
+			tempUserList.add(u);
+		}
+		
 		userList.removeAll(userList);
 		
-		for(User e : userEntryList){
+		for(User e : tempUserList){
 			userList.add(e);
 		}
 		
+		tempUserList.removeAll(tempUserList);
+		
 	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-
-		//Add the user types into the list
-		
-        AdminController.usertypeList.addAll("type1","type2","type3");
-		
+	
+	public void setTableColumns(){
 		// Create column entries from the start 
 		TableColumn userName = new TableColumn("Name");
 		
 		userName.setCellValueFactory(
-                new PropertyValueFactory<UserEntry, String>("Name"));
+                new PropertyValueFactory<User, String>("name"));
 		
 		TableColumn role = new TableColumn("Role");
 		
 	   role.setCellValueFactory(
-                new PropertyValueFactory<UserEntry, String>("Role"));
+                new PropertyValueFactory<User, String>("userType"));
 	   	   	
 	   	TableColumn email = new TableColumn("Email");
 		
 	   email.setCellValueFactory(
-                new PropertyValueFactory<UserEntry, String>("Email"));
+                new PropertyValueFactory<User, String>("email"));
 	   
-	   	adminTV.setItems(userList);
-		adminTV.getColumns().addAll(userName,role,email);
+	   adminTV.getColumns().addAll(userName,role,email);
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 		
-		//Set workflow name
-		
-		workflowName.setText(SelectStructureController.selectedStructure);
-		
-		//Upload current users
-		
-		List<String> userTypes = UserManager.getUserTypes("../Sample/");
-		
-		for(int i = 0 ; i < userTypes.size() ; i++){
-			Collection<User> users = UserManager.getTypeOf(userTypes.get(i));
+				
+		   	setTableColumns();
+		   	
+		   	//Set workflow name
+			workflowName.setText(SelectStructureController.selectedStructure);
+	 		
 			
-		}
-		
-		
+		   	// Upload current users
+			// Get the user types associated with the current workflow structure
+			List<String> userTypes = UserManager.getUserTypes("../Sample/" + SelectStructureController.selectedStructure + ".xml");
+	 		
+	 		// Add user types
+	 		for(String s : userTypes){
+	 			System.out.println(s);
+	 			if(!usertypeList.contains(s)){
+	 				AdminController.usertypeList.add(s);
+	 			}
+	 		}
+	 		
+	 		
+ 		//Sample user
+ 		//UserManager.createUser("John Park", "park123" , "413414", "Student", "john@gmail.com");
+ 		
+ 		
+ 		// Find all the users associated with that workflow structure using the user types
+	 		
+	 	if(!initialized){
+	 		for(int i = 0 ; i < usertypeList.size() ; i++){
+	 			
+	 			try{
+		 			Collection<User> users = UserManager.getTypeOf(usertypeList.get(i));
+		 				 			
+		 			for(User user : users){
+		 				userList.add(user);
+		 			}
+	 			}catch(NullPointerException e){
+	 			}
+	 			
+	 		}
+	 		
+	 		initialized = true;
+	 	}
+ 		
+ 		//Link observableList to table view
+	   	adminTV.setItems(userList);
 	}
 
 }
