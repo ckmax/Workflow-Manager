@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import application.Main;
+import application.EmptyDatabaseException;
+import application.IncorrectPasswordException;
+import application.LoginStatusMismatchException;
+import application.UserManager;
+import application.UserNotFoundException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -25,10 +30,11 @@ public class LoginController implements Initializable {
 	
 	@FXML private TextField username;
 	@FXML private PasswordField password;
+	@FXML private Text errorMsg;
 	
 	public static Stage adminStage;
 	public static Stage dashboardStage;
-	
+		
 	/**
 	 * The username/password combination of admin/admin will always initialize the adminController
 	 * Otherwise, call checkUser()
@@ -57,7 +63,7 @@ public class LoginController implements Initializable {
 					
 					stage.show(); // Pop-up admin stage
 					
-					Main.loginStage.close(); // Close login stage
+					SelectStructureController.loginStage.close(); // Close login stage
 					
 				} catch (IOException e){
 					e.printStackTrace();
@@ -66,7 +72,31 @@ public class LoginController implements Initializable {
 				
 			}else{
 			
-				//TODO: CHECK USER IN USERLIST
+				try{
+					UserManager.login(username.getText(), password.getText());
+				}catch(EmptyDatabaseException e){
+					
+					errorMsg.setText("There is currently no existing user");
+					return;
+					
+				}catch(UserNotFoundException e){
+					
+					errorMsg.setText("There is no user with that username/password combination");
+					return;
+					
+				}catch(LoginStatusMismatchException e){
+					
+					errorMsg.setText("The user is already logged in.");
+					return;
+
+					
+				}catch(IncorrectPasswordException e){
+					
+					errorMsg.setText("Incorrect password");
+					return;
+					
+				}
+				
 				
 				try{
 					FXMLLoader loader = new FXMLLoader();
@@ -87,7 +117,7 @@ public class LoginController implements Initializable {
 					
 					stage.show(); // Pop-up dashboard stage
 					
-					Main.loginStage.close(); // Close login stage
+					SelectStructureController.loginStage.close(); // Close login stage
 					
 				} catch (IOException e){
 					e.printStackTrace();

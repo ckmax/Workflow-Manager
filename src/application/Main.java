@@ -38,15 +38,18 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			selectStructureStage = primaryStage;
 
-            primaryStage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
-                WorkflowManager.saveWorkflowData();
-                UserManager.saveUserData();
-            });
-
             primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void stop(){
+		
+		WorkflowManager.saveWorkflowData();
+        UserManager.saveUserData();
+		
 	}
 	
 	public static void main(String[] args) {

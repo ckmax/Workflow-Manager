@@ -8,6 +8,6 @@
 
 <AnchorPane prefHeight="370.0" prefWidth="377.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.SelectStructureController">
    <children>
-      <ListView fx:id="selecStructureLV" layoutX="15.0" layoutY="14.0" prefHeight="342.0" prefWidth="348.0" />
+      <ListView fx:id="selectStructureLV" layoutX="15.0" layoutY="14.0" prefHeight="342.0" prefWidth="348.0" />
    </children>
 </AnchorPane>

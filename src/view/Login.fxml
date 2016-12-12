@@ -37,5 +37,6 @@
       </Text>
       <Button layoutX="279.0" layoutY="285.0" mnemonicParsing="false" onAction="#loginButton" text="Login" />
       <PasswordField fx:id="password" layoutX="176.0" layoutY="237.0" />
+      <Text fx:id="errorMsg" fill="RED" layoutX="338.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="122.13671875" />
    </children>
 </AnchorPane>

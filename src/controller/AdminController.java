@@ -3,8 +3,11 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import application.UserManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,8 +18,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.WorkflowEntry;
+import model.User;
 import model.UserEntry;
 
 /**
@@ -35,14 +39,16 @@ public class AdminController implements Initializable {
 	public static Stage editUserStage;
 	public static Stage addUserStage;
 	
-	public static UserEntry entryToBeEdited;
+	public static User userToBeEdited;
 	
 	public static ArrayList<UserEntry> userEntryList = new ArrayList<UserEntry>();
 	
 	@FXML
 	private TableView adminTV;
 	
-	public static ObservableList<UserEntry> userList = FXCollections.observableArrayList();
+	@FXML  Text workflowName;
+	
+	public static ObservableList<User> userList = FXCollections.observableArrayList();
 	
 	public static ObservableList<String> usertypeList = FXCollections.observableArrayList();
 	
@@ -51,9 +57,9 @@ public class AdminController implements Initializable {
 	 */
 	public void editUserBtn(){
 		
-		entryToBeEdited = (UserEntry) adminTV.getSelectionModel().getSelectedItem();
+		userToBeEdited = (User) adminTV.getSelectionModel().getSelectedItem();
 		
-		if(entryToBeEdited != null){
+		if(userToBeEdited != null){
 		
 			try{
 				
@@ -118,7 +124,7 @@ public class AdminController implements Initializable {
 	 */
 	public void removeUserBtn(){
 		
-		UserEntry entryToBeRemoved = (UserEntry) adminTV.getSelectionModel().getSelectedItem();
+		User entryToBeRemoved = (User) adminTV.getSelectionModel().getSelectedItem();
 		
 		userList.remove(entryToBeRemoved);
 		
@@ -154,31 +160,21 @@ public class AdminController implements Initializable {
 	
 	public void editUser(String name, String usertype, String email){
 		
-		if(entryToBeEdited == null){
+		if(userToBeEdited == null){
 			System.out.println("entry is null");
 		}
 		
 		System.out.println("name: " + name + " type: " + "usertype");
-		System.out.println("Original name: " + entryToBeEdited.getName() + " type: " + entryToBeEdited.getRole());
+		System.out.println("Original name: " + userToBeEdited.getName() + " type: " + userToBeEdited.getUserType());
 		
 
-		if(!name.isEmpty()){
-			entryToBeEdited.setName(name);
-		}
-		
-		if(!usertype.isEmpty()){
-			entryToBeEdited.setRole(usertype);
-		}
-		
-		if(!email.isEmpty()){
-			entryToBeEdited.setEmail(email);
-		}
+		UserManager.editInfo(name, usertype, email);
 		
 		//Way to update the table after editing
 		
 		userList.removeAll(userList);
 		
-		for(UserEntry e : userEntryList){
+		for(User e : userEntryList){
 			userList.add(e);
 		}
 		
@@ -209,6 +205,20 @@ public class AdminController implements Initializable {
 	   
 	   	adminTV.setItems(userList);
 		adminTV.getColumns().addAll(userName,role,email);
+		
+		//Set workflow name
+		
+		workflowName.setText(SelectStructureController.selectedStructure);
+		
+		//Upload current users
+		
+		List<String> userTypes = UserManager.getUserTypes("../Sample/");
+		
+		for(int i = 0 ; i < userTypes.size() ; i++){
+			Collection<User> users = UserManager.getTypeOf(userTypes.get(i));
+			
+		}
+		
 		
 	}
 

@@ -8,12 +8,12 @@
 
 <AnchorPane prefHeight="420.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminController">
    <children>
-      <Text layoutX="26.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+      <Text layoutX="26.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrator">
          <font>
             <Font size="30.0" />
          </font>
       </Text>
-      <Text layoutX="48.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin">
+      <Text fx:id="workflowName" layoutX="48.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="">
          <font>
             <Font size="23.0" />
          </font>

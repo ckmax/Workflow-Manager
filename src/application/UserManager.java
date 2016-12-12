@@ -202,7 +202,7 @@ public final class UserManager {
      * @param filePath the path of the xml file
      * @return List of String of user types
      */
-	public List<String> getUserTypes(String filePath) {
+	public static List<String> getUserTypes(String filePath) {
         List<String> userTypeList = new ArrayList<>();
         try {
             File xmlFile = new File(filePath);
