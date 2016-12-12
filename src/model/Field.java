@@ -7,9 +7,9 @@ public class Field implements Serializable {
     private String value;
     private String type;
 
-    public Field(String name, String value, String type) {
+    public Field(String name, String type) {
         this.name = name;
-        this.value = value;
+        this.value = "";
         this.type = type;
     }
 

@@ -5,10 +5,10 @@ import java.io.Serializable;
 public class Connection implements Serializable {
 	
 	private String id;
-	private State origin;
-	private State destination;
+	private String origin;
+	private String destination;
 
-	public Connection(String id, State origin, State destination) {
+	public Connection(String id, String origin, String destination) {
 	    this.id = id;
 	    this.origin = origin;
 	    this.destination = destination;
@@ -18,11 +18,11 @@ public class Connection implements Serializable {
         return id;
     }
 
-    public State getOrigin() {
-        return origin;
+    public State getOrigin(WorkflowStructure wfs) {
+        return wfs.getState(this.origin);
     }
 
-    public State getDestination() {
-        return destination;
+    public State getDestination(WorkflowStructure wfs) {
+        return wfs.getState(this.destination);
     }
 }

@@ -1,9 +1,6 @@
 package application;
 
-import model.Form;
-import model.State;
-import model.User;
-import model.WorkflowInstance;
+import model.*;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -47,18 +44,86 @@ public final class WorkflowManager {
 
             Element workflowElement = document.getRootElement();
 
+            Element connectionsElement = workflowElement.getChild("allflows");
+            List<Connection> connectionList = new ArrayList<>();
+            connectionsElement.getChildren().forEach(element -> {
+                connectionList.add(new Connection(element.getChildText("id"),
+                        element.getChildText("origin"),
+                        element.getChildText("dest")));
+            });
+
+            Element statesElement = workflowElement.getChild("allstates");
+            List<State> stateList = new ArrayList<>();
+            statesElement.getChildren().forEach(element -> {
+                String stateType = element.getChildText("statetype");
+                if (stateType.equals("Linear")) {
+                    stateList.add(new LinearState(element.getChildText("id"),
+                            element.getChildText("name"),
+                            element.getChildText("type")));
+                } else if (stateType.equals("Branching")) {
+                    stateList.add(new BranchState(element.getChildText("id"),
+                            element.getChildText("name"),
+                            element.getChildText("type")));
+                } else if (stateType.equals("Selection")) {
+                    SelectionState selectionState = new SelectionState(element.getChildText("id"),
+                            element.getChildText("name"),
+                            element.getChildText("type"),
+                            element.getChild("field").getChildText("name"));
+                    element.getChild("field").getChildren("value").forEach(element1 -> {
+                        selectionState.addSelect(element1.getText().trim(), element1.getChildText("connectionid"));
+                    });
+                    stateList.add(selectionState);
+                } else {// merge state
+                    stateList.add(new MergeState(element.getChildText("id"),
+                            element.getChildText("name"),
+                            element.getChildText("type"),
+                            element.getChildText("pairstate")));
+                }
+            });
+
+            WorkflowStructure wfs = new WorkflowStructure(stateList, connectionList);
+
+            Element formsElement = workflowElement.getChild("allforms");
+            List<Form> formList = new ArrayList<>();
+            formsElement.getChildren().forEach(element -> {
+                List<Field> fieldList = new ArrayList<Field>();
+                element.getChildren("formfield").forEach(element1 -> {
+                    fieldList.add(new Field(element1.getText(), "String"));
+                });
+                formList.add(new Form(element.getChildText("id"),
+                        element.getChildText("name"),
+                        element.getChildText("state"),
+                        fieldList));
+            });
+            formList.forEach(form -> {
+                wfs.getState(form.belongsTo()).getForms().add(form);
+            });
+
+            Element codesElement = workflowElement.getChild("codesnippets");
+            List<ProgrammerCode> programmerCodeList = new ArrayList<>();
+            codesElement.getChildren().forEach(element -> {
+                programmerCodeList.add(new ProgrammerCode(element.getChildText("packagename"),
+                        element.getChildText("classname"),
+                        element.getChildText("method"),
+                        element.getChildText("stateid")));
+            });
+            programmerCodeList.forEach(programmerCode -> {
+                wfs.getState(programmerCode.getStateID()).getProgrammerCodes().add(programmerCode);
+            });
+
+            WorkflowInstance wfi = new WorkflowInstance(wfs, assignWorkflowID(), wfs.getFirstState());
+
+            user.addWorkflow(wfi);
+
+            Integer workflowID = assignWorkflowID();
+            workflowInstanceHashMap.put(workflowID, wfi);
+
+            return workflowID;
+
         } catch (Exception e) {
 		    e.printStackTrace();
+		    return null;
         }
-
-        WorkflowInstance wfi = null;
-
-        user.addWorkflow(wfi);
-
-        Integer workflowID = assignWorkflowID();
-        workflowInstanceHashMap.put(workflowID, wfi);
-
-        return workflowID;
 	}
 
     /**
@@ -78,6 +143,17 @@ public final class WorkflowManager {
 	 */
 	public static boolean transition(WorkflowInstance wfi){
 		if (checkTransSrc(wfi) && checkTransDest(wfi)) {
+		    wfi.getCurrentStates().forEach(state -> {
+		        state.getProgrammerCodes().forEach(programmerCode -> {
+		            try {
+		                invokeProgrammerMethod(programmerCode.getPackageName(),
+                                programmerCode.getClassName(),
+                                programmerCode.getMethodName());
+                    } catch (Exception e) {
+		                e.printStackTrace();
+                    }
+                });
+            });
 		    wfi.nextStates();
 		    return true;
         }

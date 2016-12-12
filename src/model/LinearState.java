@@ -1,14 +1,13 @@
 package model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Derek on 12/11/16.
  */
 public class LinearState extends State implements Serializable {
 
-    public LinearState(String id, String userType, List<Form> forms, List<ProgrammerCode> programmerCodes) {
-        super(id, userType, forms, programmerCodes);
+    public LinearState(String id, String name, String userType) {
+        super(id, name, userType);
     }
 }

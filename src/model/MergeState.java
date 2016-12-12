@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Derek on 12/11/16.
@@ -10,8 +9,8 @@ public class MergeState extends State implements Serializable {
 
     private final String pairedStateID;
 
-    public MergeState(String id, String userType, List<Form> forms, List<ProgrammerCode> programmerCodes, String pairedStateID) {
-        super(id, userType, forms, programmerCodes);
+    public MergeState(String id, String name, String userType, String pairedStateID) {
+        super(id, name, userType);
         this.pairedStateID = pairedStateID;
     }
 

@@ -9,17 +9,11 @@ public class WorkflowStructure implements Serializable {
 
     private HashMap<String, Connection> connectionHashMap;
 
-    public WorkflowStructure(String[] stateIDs, State[] states, String[] connectionIDs, Connection[] connections) {
+    public WorkflowStructure(List<State> states,List<Connection> connections) {
         stateHashMap = new HashMap<>();
         connectionHashMap = new HashMap<>();
-
-        for (int i = 0; i < states.length; i++) {
-            stateHashMap.put(stateIDs[i], states[i]);
-        }
-
-        for (int i = 0; i < connections.length; i++) {
-            connectionHashMap.put(connectionIDs[i], connections[i]);
-        }
+        states.forEach(state -> stateHashMap.put(state.getId(), state));
+        connections.forEach(connection -> connectionHashMap.put(connection.getId(), connection));
     }
 
     public State getState(String id) {
@@ -33,8 +27,8 @@ public class WorkflowStructure implements Serializable {
     public Set<State> getNextStates(String currentStateID) {
         Set<State> nextStates = new HashSet<>();
         connectionHashMap.forEach((s, connection) -> {
-            if (connection.getOrigin().getId().equals(currentStateID)) {
-                nextStates.add(connection.getDestination());
+            if (connection.getOrigin(this).getId().equals(currentStateID)) {
+                nextStates.add(connection.getDestination(this));
             }
         });
         return nextStates;

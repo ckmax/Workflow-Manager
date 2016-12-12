@@ -7,18 +7,24 @@ import java.util.List;
 
 public class Form implements Serializable{
 
+    private String id;
 	private String name;
 	private String status;
     private String stateID;
     private boolean completed;
     private List<Field> fields;
 
-    public Form(String name, String stateID, List<Field> fields) {
+    public Form(String id, String name, String stateID, List<Field> fields) {
+        this.id = id;
         this.name = name;
         this.stateID = stateID;
         this.completed = false;
         this.fields = fields;
         this.status = "Not started";
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {
@@ -31,6 +37,15 @@ public class Form implements Serializable{
 
     public String getStatus() {
         return status;
+    }
+
+    public Field getField(String fieldName) {
+        for (Field field : this.fields) {
+            if (field.getName().equals(fieldName)) {
+                return field;
+            }
+        }
+        return null;
     }
 
     public List<Field> getFields() {
