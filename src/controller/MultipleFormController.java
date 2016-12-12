@@ -1,5 +1,10 @@
 package controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import application.WorkflowManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,20 +21,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Form;
+import model.FormEntry;
+import model.WorkflowEntry;
 import model.WorkflowInstance;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class MultipleFormController implements Initializable {
 	
 	@FXML private TableView multipleFormTV;
 	@FXML private Button submitB;
 	public static Stage formStage;
+	public static Form selectedForm;
 	
-	ObservableList<Form> data = FXCollections.observableArrayList();
+	public static ObservableList<Form> data = FXCollections.observableArrayList();
 	
 	public void setUpFormTable(){
 		
@@ -38,13 +41,13 @@ public class MultipleFormController implements Initializable {
 		//Call getForms from the WorkflowManager
 		
 		WorkflowInstance wfi = WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId()));
-
+		
 		List<Form> forms = WorkflowManager.getForms(LoginController.currentUser, wfi);
 		
-		//Turn forms to FormEntries
-		
-			
-		data.addAll();
+		// Add the forms to the observable list
+		for(Form f : forms){
+			data.add(f);
+		}
 		
 		setUpColNames();
 	   
@@ -53,9 +56,9 @@ public class MultipleFormController implements Initializable {
 	   multipleFormTV.setOnMousePressed(new EventHandler<MouseEvent>() {
 		    @Override 
 		    public void handle(MouseEvent event) {
-		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {		            
+		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {	
+		        	selectedForm = (Form) multipleFormTV.getSelectionModel().getSelectedItem();
 		            showForm();
-		            
 		        }
 		    }
 		});
@@ -106,6 +109,15 @@ public class MultipleFormController implements Initializable {
 		} catch (IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	public void submitBtn(){
+		
+		WorkflowManager.transition(WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())));
+		WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).getCurrentStates().forEach(state -> {
+			System.out.println(state.getId() + " " + state.getForms());
+		});
+		DashboardController.multipleFormStage.close();
 	}
 
 

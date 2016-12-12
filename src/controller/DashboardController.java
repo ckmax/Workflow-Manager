@@ -47,6 +47,8 @@ public class DashboardController implements Initializable {
 	
 	public static WorkflowEntry selectedWorkflowEntry;
 	
+	public static Stage multipleFormStage;
+	
 	
 	ObservableList<WorkflowEntry> data = FXCollections.observableArrayList();;
 	
@@ -90,6 +92,8 @@ public class DashboardController implements Initializable {
 				
 				stage.setScene(scene);
 				stage.setTitle("Codeflow");
+				
+				multipleFormStage = stage;
 							
 				stage.show(); // Pop-up form stage
 							
