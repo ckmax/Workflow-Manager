@@ -26,6 +26,8 @@ public class Main extends Application {
 		
 		try {
 			
+			UserManager.createUser("Cap", "1", "1", "Student", "max@gmail.com");
+			
 			// Load FXML file	
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/SelectStructure.fxml"));

@@ -208,6 +208,10 @@ public class AdminController implements Initializable {
 
 		UserManager.editInfo(name, username, usertype, email);
 		
+		userList.get(userList.indexOf(userToBeEdited)).resetEmail(email);
+		userList.get(userList.indexOf(userToBeEdited)).resetName(name);
+		userList.get(userList.indexOf(userToBeEdited)).resetUserType(usertype);
+		
 		System.out.println("New name: " + userToBeEdited.getName() + " New Type: " + userToBeEdited.getUserType());
 		
 		//Way to update the table after editing

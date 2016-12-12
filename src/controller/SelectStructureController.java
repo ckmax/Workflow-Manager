@@ -29,6 +29,8 @@ public class SelectStructureController implements Initializable {
 	
 	public static String selectedStructure;
 	
+	public static final String filePath = "../Sample/";
+	
 	ObservableList<String> structures = FXCollections.observableArrayList ();
 
 	@Override

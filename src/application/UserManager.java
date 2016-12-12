@@ -156,9 +156,9 @@ public final class UserManager {
 
 	    User user = userHashMap.get(username);
 
-        if (user.isLoggedIn()) {
-            throw new LoginStatusMismatchException();
-        }
+       // if (user.isLoggedIn()) {
+        //    throw new LoginStatusMismatchException();
+       // }
 
         if (!user.login(password)) {
             throw new IncorrectPasswordException();

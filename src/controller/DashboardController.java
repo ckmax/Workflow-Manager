@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import application.WorkflowManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -43,11 +44,12 @@ public class DashboardController implements Initializable {
 	 */
 	public void initializeBtn(){
 		
-		//Populate Table
-		initializeTable();
+		WorkflowManager.instantiate(LoginController.currentUser, SelectStructureController.filePath + SelectStructureController.selectedStructure + ".xml");
+		
+		
 		
 		//Initialize form
-		initializeForm();
+		//initializeForm();
 		
 	}
 	
@@ -208,6 +210,9 @@ public class DashboardController implements Initializable {
        actionCol.setCellValueFactory( new PropertyValueFactory<>( "DUMMY" ) );
        
 		tableView.getColumns().addAll(workflowName,info,actionCol);
+		
+		//Populate Table
+		initializeTable();
 
 	}
 	

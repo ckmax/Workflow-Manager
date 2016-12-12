@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.User;
 
 /**
  * 
@@ -32,7 +33,7 @@ public class LoginController implements Initializable {
 	@FXML private PasswordField password;
 	@FXML private Text errorMsg;
 	
-	public static String currentUser;
+	public static User currentUser;
 	
 	public static Stage adminStage;
 	public static Stage dashboardStage;
@@ -101,7 +102,7 @@ public class LoginController implements Initializable {
 				
 				// If there are no errors, continue to this code
 				
-				currentUser = username.getText();
+				currentUser = UserManager.login(username.getText(), password.getText());
 				
 				try{
 					FXMLLoader loader = new FXMLLoader();
