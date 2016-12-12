@@ -55,11 +55,20 @@ public class FormController implements Initializable {
 	    			if(node instanceof TextField){
 	    				String name = ((TextField)node).getId();
 	    				MultipleFormController.selectedForm.getField(name).setValue(((TextField)node).getText());
-	    				
 	    			}
-	
 	    		});
-            	
+
+				WorkflowManager.getWorkflowInstance(
+						Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).
+						getForms().forEach(form -> {
+					if (form.equals(MultipleFormController.selectedForm)) {
+						for (int i = 0; i < form.getFields().size(); i++) {
+						    form.getFields().get(i).setValue(
+						            MultipleFormController.selectedForm.getFields().get(i).getValue());
+                        }
+					}
+				});
+
             	MultipleFormController.formStage.close();
             	 	
             }
