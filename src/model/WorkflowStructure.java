@@ -30,11 +30,11 @@ public class WorkflowStructure implements Serializable {
         return stateHashMap.get("S1");
     }
 
-    public Set<State> getNextStates(String id) {
+    public Set<State> getNextStates(String currentStateID) {
         Set<State> nextStates = new HashSet<>();
         connectionHashMap.forEach((s, connection) -> {
-            if (connection.getOrigins().contains(getState(id))) {
-                nextStates.addAll(connection.getDestinations());
+            if (connection.getOrigin().getId().equals(currentStateID)) {
+                nextStates.add(connection.getDestination());
             }
         });
         return nextStates;
