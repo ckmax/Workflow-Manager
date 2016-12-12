@@ -133,6 +133,7 @@ public final class WorkflowManager {
 
         Integer workflowID = wfi.getId();
         workflowInstanceHashMap.put(workflowID, wfi);
+        UserManager.addNewWorkflowInstance(wfi);
 
         return workflowID;
 	}

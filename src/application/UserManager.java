@@ -272,6 +272,14 @@ public final class UserManager {
         return false;
     }
 
+    protected static void addNewWorkflowInstance(WorkflowInstance wfi) {
+	    userHashMap.forEach((s, user) -> {
+	        if (wfi.getWorkflowStructure().getUserTypes().contains(user.getUserType())) {
+	            user.addWorkflow(wfi);
+            }
+        });
+    }
+
     /**
      * Serialize userHashMap to file
      */
