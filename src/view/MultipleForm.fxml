@@ -13,6 +13,6 @@
       </TableView>
    </center>
    <bottom>
-      <Button fx:id="submitB" mnemonicParsing="false" text="Submit" BorderPane.alignment="CENTER" />
+      <Button fx:id="submitB" mnemonicParsing="false" text="Submit" onAction="#submitBtn" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>

@@ -14,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import model.Field;
 
 public class FormController implements Initializable {
 
@@ -29,32 +30,58 @@ public class FormController implements Initializable {
 		final VBox vbox = new VBox();
 	    final HBox hbox = new HBox();
 	    
-	    Label tf1Label = new Label("Name");
-	    TextField tf1 = new TextField();
 	    
-	    Label tf2Label = new Label("Age");
-	    TextField tf2 = new TextField();
+	    for(Field f : MultipleFormController.selectedForm.getFields()){
+
+	    	Label t = new Label(f.getName());
+	    	TextField tf = new TextField();
+	    	tf.setId(f.getName());
+	    	
+	    	vbox.getChildren().addAll(t,tf);
+	    }
 	    
-	    Label tf3Label = new Label("Job");
-	    TextField tf3 = new TextField();
-	    
-	    Label tf4Label = new Label("Course Request");
-	    TextField tf4 = new TextField();
-	    
-	    
-	    Button submit = new Button("Submit");
+	    Button save = new Button("Save");
+	    Button complete = new Button("Complete");
 	    Button cancel = new Button("Cancel");
 	    
 	    //Set click handlers
-	    
-	    submit.setOnAction(new EventHandler<ActionEvent>() {
+	    	    
+	    save.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	
+	    		vbox.getChildren().forEach(node -> {
+	    			if(node instanceof TextField){
+	    				String name = ((TextField)node).getId();
+	    				MultipleFormController.selectedForm.getField(name).setValue(((TextField)node).getText());
+	    				
+	    			}
+	
+	    		});
+            	
             	MultipleFormController.formStage.close();
-            	
-            	
+            	 	
             }
         });
+	    
+	    //MultipleFormController.selectedForm.getFields().forEach( f -> {
+    	//	System.out.println(f.getName() + " " + f.getValue());
+    	//});
+	    
+	    complete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	
+            	MultipleFormController.selectedForm.setCompleted();
+            	int i = MultipleFormController.data.indexOf(MultipleFormController.selectedForm);
+            	MultipleFormController.data.remove(i);
+            	MultipleFormController.data.add(MultipleFormController.selectedForm);
+//            	System.out.println(MultipleFormController.selectedForm.isCompleted());
+            	
+            	MultipleFormController.formStage.close();
+            }
+        });
+	    
 	    
 	    cancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -64,14 +91,12 @@ public class FormController implements Initializable {
         });
 	    
 	    hbox.setSpacing(5);
-	    hbox.getChildren().addAll(submit, cancel);
+	    hbox.getChildren().addAll(save, complete, cancel);
 	    
 	    vbox.setSpacing(5);
 	    vbox.setPadding(new Insets(20, 0, 0, 20));
-	    vbox.getChildren().addAll(tf1Label,tf1,tf2Label,tf2,tf3Label,tf3,tf4Label,tf4);
 	    vbox.getChildren().addAll(hbox);
-		//AnchorPane.setRightAnchor(vbox, 10.0);
-		
+	    
 		formAP.getChildren().add(vbox);
 		
 		/*
