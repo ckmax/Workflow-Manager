@@ -72,7 +72,13 @@ public final class WorkflowManager {
                 }
             });
 
-            WorkflowStructure wfs = new WorkflowStructure(stateList, connectionList);
+            Element usersElement = workflowElement.getChild("users");
+            Set<String> userTypes = new HashSet<>();
+            usersElement.getChildren().forEach(element -> {
+                userTypes.add(element.getChildText("name"));
+            });
+
+            WorkflowStructure wfs = new WorkflowStructure(stateList, connectionList, userTypes);
 
             Element formsElement = workflowElement.getChild("allforms");
             List<Form> formList = new ArrayList<>();
@@ -294,6 +300,14 @@ public final class WorkflowManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected static void updateDataForNewUser(User user) {
+	    workflowInstanceHashMap.forEach((integer, workflowInstance) -> {
+	        if (workflowInstance.getWorkflowStructure().getUserTypes().contains(user.getUserType())) {
+	            user.addWorkflow(workflowInstance);
+            }
+        });
     }
 
     /**

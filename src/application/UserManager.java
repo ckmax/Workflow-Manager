@@ -50,6 +50,7 @@ public final class UserManager {
 
         User newUser = new User(name, username, password, userType, email);
         userHashMap.put(username, newUser);
+        WorkflowManager.updateDataForNewUser(newUser);
 	}
 	
 	/**

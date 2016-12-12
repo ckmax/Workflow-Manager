@@ -9,11 +9,18 @@ public class WorkflowStructure implements Serializable {
 
     private HashMap<String, Connection> connectionHashMap;
 
-    public WorkflowStructure(List<State> states,List<Connection> connections) {
+    private Set<String> userTypes;
+
+    public WorkflowStructure(List<State> states,List<Connection> connections, Set<String> userTypes) {
         stateHashMap = new HashMap<>();
         connectionHashMap = new HashMap<>();
         states.forEach(state -> stateHashMap.put(state.getId(), state));
         connections.forEach(connection -> connectionHashMap.put(connection.getId(), connection));
+        this.userTypes = userTypes;
+    }
+
+    public Set<String> getUserTypes() {
+        return userTypes;
     }
 
     public State getState(String id) {
