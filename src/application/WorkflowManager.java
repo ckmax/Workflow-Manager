@@ -25,17 +25,8 @@ public final class WorkflowManager {
     private static HashMap<Integer, WorkflowInstance> workflowInstanceHashMap = null;
     private static final String dataFilePath = "workflowData.dat";
 
-	/**
-	 * Parse the XML file, get a Document object and create a Workflow instance from the Document
-	 * @param filePath
-	 * @return
-	 */
-	public static Integer instantiate(User user, String filePath){
-		if (workflowInstanceHashMap == null) {
-            workflowInstanceHashMap = new HashMap<>();
-        }
-
-		try {
+    public static WorkflowStructure parse(String filePath) {
+        try {
             File xmlFile = new File(filePath);
 
             SAXBuilder saxBuilder = new SAXBuilder();
@@ -111,19 +102,33 @@ public final class WorkflowManager {
                 wfs.getState(programmerCode.getStateID()).getProgrammerCodes().add(programmerCode);
             });
 
-            WorkflowInstance wfi = new WorkflowInstance(wfs, assignWorkflowID(), wfs.getFirstState());
-
-            user.addWorkflow(wfi);
-
-            Integer workflowID = assignWorkflowID();
-            workflowInstanceHashMap.put(workflowID, wfi);
-
-            return workflowID;
+            return wfs;
 
         } catch (Exception e) {
-		    e.printStackTrace();
-		    return null;
+            e.printStackTrace();
+            return null;
         }
+    }
+
+	/**
+	 * Parse the XML file, get a Document object and create a Workflow instance from the Document
+	 * @param user
+     * @param wfs
+	 * @return
+	 */
+	public static Integer instantiate(User user, WorkflowStructure wfs){
+		if (workflowInstanceHashMap == null) {
+            workflowInstanceHashMap = new HashMap<>();
+        }
+
+        WorkflowInstance wfi = new WorkflowInstance(wfs, assignWorkflowID(), wfs.getFirstState());
+
+        user.addWorkflow(wfi);
+
+        Integer workflowID = assignWorkflowID();
+        workflowInstanceHashMap.put(workflowID, wfi);
+
+        return workflowID;
 	}
 
     /**
