@@ -1,10 +1,5 @@
 package controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import application.WorkflowManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,9 +16,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Form;
-import model.FormEntry;
-import model.WorkflowEntry;
 import model.WorkflowInstance;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class MultipleFormController implements Initializable {
 	
@@ -112,7 +110,9 @@ public class MultipleFormController implements Initializable {
 	}
 	
 	public void submitBtn(){
-		
+		WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).getCurrentStates().forEach(state -> {
+			System.out.println(state.getId() + " " + state.getForms());
+		});
 		WorkflowManager.transition(WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())));
 		WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).getCurrentStates().forEach(state -> {
 			System.out.println(state.getId() + " " + state.getForms());

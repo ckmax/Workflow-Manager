@@ -76,16 +76,6 @@ public class Form implements Serializable{
 
         Form form = (Form) obj;
 
-        if (this.fields.size() != form.fields.size()) {
-            return false;
-        }
-
-        for (int i = 0; i < this.fields.size(); i++) {
-            if (!this.fields.get(i).equals(form.fields.get(i))) {
-                return false;
-            }
-        }
-
-        return true;
+        return this.getId().equals(form.getId());
     }
 }

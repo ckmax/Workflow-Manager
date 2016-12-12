@@ -1,8 +1,6 @@
 package controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
+import application.WorkflowManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,6 +13,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Field;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class FormController implements Initializable {
 
@@ -73,6 +74,13 @@ public class FormController implements Initializable {
             public void handle(ActionEvent event) {
             	
             	MultipleFormController.selectedForm.setCompleted();
+				WorkflowManager.getWorkflowInstance(
+						Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).
+						getForms().forEach(form -> {
+							if (form.equals(MultipleFormController.selectedForm)) {
+								form.setCompleted();
+							}
+				});
             	int i = MultipleFormController.data.indexOf(MultipleFormController.selectedForm);
             	MultipleFormController.data.remove(i);
             	MultipleFormController.data.add(MultipleFormController.selectedForm);
