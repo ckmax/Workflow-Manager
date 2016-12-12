@@ -1,5 +1,10 @@
 package controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import application.WorkflowManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,21 +19,19 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Form;
 import model.WorkflowInstance;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class MultipleFormController implements Initializable {
 	
 	@FXML private TableView multipleFormTV;
 	@FXML private Button submitB;
+	@FXML private Text errorMsg;
 	public static Stage formStage;
 	public static Form selectedForm;
+	
 	
 	public static ObservableList<Form> data = FXCollections.observableArrayList();
 	
@@ -41,6 +44,10 @@ public class MultipleFormController implements Initializable {
 		WorkflowInstance wfi = WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId()));
 		
 		List<Form> forms = WorkflowManager.getForms(LoginController.currentUser, wfi);
+		
+		forms.forEach(form -> {
+			System.out.println(form.getName());
+		});
 		
 		// Add the forms to the observable list
 		for(Form f : forms){
@@ -113,11 +120,20 @@ public class MultipleFormController implements Initializable {
 		WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).getCurrentStates().forEach(state -> {
 			System.out.println(state.getId() + " " + state.getForms());
 		});
-		WorkflowManager.transition(WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())));
+		
+		if(!WorkflowManager.transition(WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())))){
+			
+			//Error Message
+			errorMsg.setText("Please complete all the forms");
+			
+			
+		}else{
+			
+			DashboardController.multipleFormStage.close();
+		};
 		WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).getCurrentStates().forEach(state -> {
 			System.out.println(state.getId() + " " + state.getForms());
 		});
-		DashboardController.multipleFormStage.close();
 	}
 
 

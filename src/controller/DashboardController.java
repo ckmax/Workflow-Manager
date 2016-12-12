@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import application.WorkflowManager;
@@ -109,7 +110,15 @@ public class DashboardController implements Initializable {
 	 */
 	public void initializeTable(){
 	   
-		LoginController.currentUser.getInvolvesIn();
+		List<WorkflowInstance> wfiList = LoginController.currentUser.getInvolvesIn();
+		
+		for(WorkflowInstance w : wfiList){
+			
+			WorkflowEntry wfe = new WorkflowEntry(w.getId() + "", w.getWorkflowStructure().getFirstState().getName());
+			
+			data.add(wfe);
+		}
+		
 		
 		// Set the event when mouse is double clicked
 	   tableView.setOnMousePressed(new EventHandler<MouseEvent>() {

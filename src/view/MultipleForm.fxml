@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -13,6 +14,9 @@
       </TableView>
    </center>
    <bottom>
-      <Button fx:id="submitB" mnemonicParsing="false" text="Submit" onAction="#submitBtn" BorderPane.alignment="CENTER" />
+      <Button fx:id="submitB" mnemonicParsing="false" onAction="#submitBtn" text="Submit" BorderPane.alignment="CENTER" />
    </bottom>
+   <top>
+      <Text fx:id="errorMsg" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" BorderPane.alignment="CENTER" />
+   </top>
 </BorderPane>
