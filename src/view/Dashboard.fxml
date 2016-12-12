@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane  prefHeight="420.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardController">
+<AnchorPane prefHeight="420.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DashboardController">
    <children>
-      <Text layoutX="26.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+      <Text fx:id="usernameTF" layoutX="26.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
          <font>
             <Font size="30.0" />
          </font>
       </Text>
-      <Text layoutX="48.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Workflow">
+      <Text fx:id="workflowNameTF" layoutX="48.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Workflow">
          <font>
             <Font size="23.0" />
          </font>
@@ -42,14 +42,14 @@
         <columns>
         </columns>
       </TableView>
-      <Button layoutX="28.0" layoutY="134.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="New" onAction="#initializeBtn" />
-      <Button layoutX="128.0" layoutY="134.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="91.0" text="Remove" onAction="#removeBtn" />
+      <Button fx:id="initializeBtn" layoutX="28.0" layoutY="134.0" mnemonicParsing="false" onAction="#initializeBtn" prefHeight="25.0" prefWidth="91.0" text="New" />
+      <Button fx:id="removeBtn" layoutX="128.0" layoutY="134.0" mnemonicParsing="false" onAction="#removeBtn" prefHeight="25.0" prefWidth="91.0" text="Remove" />
       <Text layoutX="567.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logout">
          <font>
             <Font name="System Bold" size="1.0" />
          </font>
       </Text>
-      <Button layoutX="550.0" layoutY="15.0" mnemonicParsing="false" text="Logout" onAction="#logOutBtn">
+      <Button layoutX="550.0" layoutY="15.0" mnemonicParsing="false" onAction="#logOutBtn" text="Logout">
          <font>
             <Font size="11.0" />
          </font>

@@ -7,17 +7,23 @@ import java.util.ResourceBundle;
 import application.WorkflowManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.User;
 import model.WorkflowEntry;
+import model.WorkflowInstance;
 
 /**
  * 
@@ -34,6 +40,13 @@ import model.WorkflowEntry;
 public class DashboardController implements Initializable {
 
 	@FXML private TableView tableView;
+	@FXML private Text workflowNameTF;
+	@FXML private Text usernameTF;
+	@FXML private Button initializeBtn;
+	@FXML private Button removeBtn;
+	
+	public static WorkflowEntry selectedWorkflowEntry;
+	
 	
 	ObservableList<WorkflowEntry> data = FXCollections.observableArrayList();;
 	
@@ -44,9 +57,14 @@ public class DashboardController implements Initializable {
 	 */
 	public void initializeBtn(){
 		
-		WorkflowManager.instantiate(LoginController.currentUser, SelectStructureController.filePath + SelectStructureController.selectedStructure + ".xml");
+		Integer workflowInstanceId = WorkflowManager.instantiate(LoginController.currentUser, SelectStructureController.workflowStructure);
+		
+		WorkflowInstance wfi = WorkflowManager.getWorkflowInstance(workflowInstanceId);
 		
 		
+		WorkflowEntry wfe = new WorkflowEntry(wfi.getId() + "", wfi.getWorkflowStructure().getFirstState().getName());
+		
+		data.add(wfe);
 		
 		//Initialize form
 		//initializeForm();
@@ -87,47 +105,20 @@ public class DashboardController implements Initializable {
 	 */
 	public void initializeTable(){
 	   
-	   // Adding a button to tableView
-	   /*
-	   TableColumn actionCol = new TableColumn( "Action" );
-       actionCol.setCellValueFactory( new PropertyValueFactory<>( "DUMMY" ) );
-
-       Callback<TableColumn<WorkflowEntry, String>, TableCell<WorkflowEntry, String>> cellFactory = //
-               new Callback<TableColumn<WorkflowEntry, String>, TableCell<WorkflowEntry, String>>()
-               {
-                   public TableCell<WorkflowEntry, String> call( final TableColumn<WorkflowEntry, String> param )
-                   {
-                       final TableCell<WorkflowEntry, String> cell = new TableCell<WorkflowEntry, String>()
-                       {
-
-                           final Button btn = new Button( "Approve" );
-
-                           @Override
-                           public void updateItem( String item, boolean empty )
-                           {
-                               super.updateItem( item, empty );
-                               if ( empty )
-                               {
-                                   setGraphic( null );
-                                   setText( null );
-                               }
-                               else
-                               {
-                                   btn.setOnAction( ( ActionEvent event ) ->
-                                           {
-                                               WorkflowEntry person = getTableView().getItems().get( getIndex() );
-                                               System.out.println( person.getName() );
-                                   } );
-                                   setGraphic( btn );
-                                   setText( null );
-                               }
-                           }
-                       };
-                       return cell;
-                   }
-               };
-
-       actionCol.setCellFactory( cellFactory );*/
+		LoginController.currentUser.getInvolvesIn();
+		
+		// Set the event when mouse is double clicked
+	   tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
+		    @Override 
+		    public void handle(MouseEvent event) {
+		        if (event.isPrimaryButtonDown() && event.getClickCount() == 2) {		            
+		            
+		        	selectedWorkflowEntry = (WorkflowEntry) tableView.getSelectionModel().getSelectedItem();
+		        	initializeForm();
+		            
+		        }
+		    }
+		});
 		
 		tableView.setItems(data);
 	}
@@ -188,28 +179,42 @@ public class DashboardController implements Initializable {
 	public void stopBtn(){
 		
 	}
+	
+	public void initTableCol(){
+		// Create column entries from the start 
+		TableColumn workflowName = new TableColumn("ID");
+		
+		workflowName.setCellValueFactory(
+                new PropertyValueFactory<WorkflowEntry, String>("id"));
+		
+		TableColumn info = new TableColumn("Current State");
+		
+	   info.setCellValueFactory(
+                new PropertyValueFactory<WorkflowEntry, String>("currentState"));
+       
+		tableView.getColumns().addAll(workflowName,info);
+	}
 
+	public boolean checkUser(User user){
+		
+		return SelectStructureController.workflowStructure.getFirstState().getUserType().equals(user.getUserType());
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
+		usernameTF.setText(LoginController.currentUser.getUsername());
+		workflowNameTF.setText(SelectStructureController.selectedStructure);
 		
-		// Create column entries from the start 
-		TableColumn workflowName = new TableColumn("Name");
+		//Initialize the new/remove buttons
+		if(!checkUser(LoginController.currentUser)){
+			
+			initializeBtn.setVisible(false);
+			removeBtn.setVisible(false);
+			
+		}
 		
-		workflowName.setCellValueFactory(
-                new PropertyValueFactory<WorkflowEntry, String>("name"));
-		
-		TableColumn info = new TableColumn("Info");
-		
-	   info.setCellValueFactory(
-                new PropertyValueFactory<WorkflowEntry, String>("info"));
-	   
-	   // Adding a button to tableView
-	   
-	   TableColumn actionCol = new TableColumn( "Action" );
-       actionCol.setCellValueFactory( new PropertyValueFactory<>( "DUMMY" ) );
-       
-		tableView.getColumns().addAll(workflowName,info,actionCol);
+		initTableCol();
 		
 		//Populate Table
 		initializeTable();

@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import application.Main;
-import application.UserManager;
 import application.WorkflowManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import model.WorkflowStructure;
 
 public class SelectStructureController implements Initializable {
 	
@@ -32,6 +31,8 @@ public class SelectStructureController implements Initializable {
 	public static final String filePath = "../Sample/";
 	
 	ObservableList<String> structures = FXCollections.observableArrayList ();
+	
+	public static WorkflowStructure workflowStructure;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -54,6 +55,8 @@ public class SelectStructureController implements Initializable {
 	        public void handle(MouseEvent event) {
 	        	if(event.getClickCount() == 2){
 	        		selectedStructure = (String)selectStructureLV.getSelectionModel().getSelectedItem();
+	        		
+	        		workflowStructure = WorkflowManager.parse(filePath + selectedStructure + ".xml");
 	        		
 	        		try{
 						FXMLLoader loader = new FXMLLoader();

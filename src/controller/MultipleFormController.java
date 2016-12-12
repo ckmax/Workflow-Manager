@@ -2,8 +2,10 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import application.WorkflowManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -18,7 +20,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.Form;
 import model.FormEntry;
+import model.WorkflowInstance;
 
 public class MultipleFormController implements Initializable {
 	
@@ -26,31 +30,34 @@ public class MultipleFormController implements Initializable {
 	@FXML private Button submitB;
 	public static Stage formStage;
 	
-	ObservableList<FormEntry> data = FXCollections.observableArrayList();
+	ObservableList<Form> data = FXCollections.observableArrayList();
 	
 	public void setUpFormTable(){
 		
+		LoginController.currentUser.getInvolvesIn();
+		
 		//Call getForms from the WorkflowManager
+		
+		WorkflowInstance wfi = WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId()));
+		
+		List<Form> forms = WorkflowManager.getForms(LoginController.currentUser, wfi);
 		
 		//Turn forms to FormEntries
 		
-		FormEntry formEntry1 = new FormEntry("Application");
-		FormEntry formEntry2 = new FormEntry("Application2");
 			
-		data.addAll(formEntry1,formEntry2);
-		
+		data.addAll();
 		// Create column entries from the start 
 		TableColumn formName = new TableColumn("Name");
 		
 		formName.setCellValueFactory(
-                new PropertyValueFactory<FormEntry, String>("Name"));
+                new PropertyValueFactory<Form, String>("name"));
 		
 		formName.setPrefWidth(222.0);
 		
-		TableColumn formStatus = new TableColumn("Status");
+		TableColumn formStatus = new TableColumn("Completed");
 		
 	   formStatus.setCellValueFactory(
-                new PropertyValueFactory<FormEntry, String>("Status"));
+                new PropertyValueFactory<Form, Boolean>("completed"));
 	   
 	   formStatus.setPrefWidth(105.0);
 	   

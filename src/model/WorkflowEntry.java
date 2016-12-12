@@ -2,31 +2,28 @@ package model;
 
 public class WorkflowEntry {
 
-	private String name;
-	private String info;
+	private String id;
+	private String currentState;
 	
-	public WorkflowEntry(String name, String info){
-		this.name = name;
-		this.info = info;
+	public WorkflowEntry(String id, String currentState){
+		this.id = id;
+		this.currentState = currentState;
 	}
 	
-	public WorkflowEntry(String name){
-		this.name = name;
+	
+	public String getCurrentState(){
+		return currentState;
 	}
 	
-	public String getName(){
-		return name;
+	public void setCurrentState(String name){
+		this.currentState = name;
 	}
 	
-	public void setName(String name){
-		this.name = name;
+	public String getId(){
+		return id;
 	}
 	
-	public String getInfo(){
-		return info;
-	}
-	
-	public void setInfo(String info){
-		this.info = info;
+	public void setId(String info){
+		this.id = info;
 	}
 }
