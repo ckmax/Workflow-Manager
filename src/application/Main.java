@@ -27,6 +27,9 @@ public class Main extends Application {
 		try {
 			
 			UserManager.createUser("Cap", "1", "1", "Student", "max@gmail.com");
+			UserManager.createUser("Lisa", "2", "2", "GradSecretary", "max@gmail.com");
+			UserManager.createUser("John", "3", "3", "GradDean", "max@gmail.com");
+			UserManager.createUser("Mike", "4", "4", "SASDean", "max@gmail.com");
 			
 			// Load FXML file	
 			FXMLLoader loader = new FXMLLoader();

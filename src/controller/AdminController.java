@@ -184,6 +184,8 @@ public class AdminController implements Initializable {
 			stage.setScene(scene);
 			stage.setResizable(false);
 			stage.setTitle("Codeflow");
+			
+			SelectStructureController.loginStage = stage;
 						
 			stage.show(); // Pop-up login stage
 			
@@ -199,19 +201,13 @@ public class AdminController implements Initializable {
 		if(userToBeEdited == null){
 			System.out.println("entry is null");
 		}
-		
-		System.out.println("name: " + name + " type: " + usertype);
-		System.out.println("Original name: " + userToBeEdited.getName() + " type: " + userToBeEdited.getUserType());
-
 
 		UserManager.editInfo(name, username, usertype, email);
 		
 		userList.get(userList.indexOf(userToBeEdited)).resetEmail(email);
 		userList.get(userList.indexOf(userToBeEdited)).resetName(name);
 		userList.get(userList.indexOf(userToBeEdited)).resetUserType(usertype);
-		
-		System.out.println("New name: " + userToBeEdited.getName() + " New Type: " + userToBeEdited.getUserType());
-		
+				
 		//Way to update the table after editing
 		
 		for(User u : userList){
@@ -264,7 +260,6 @@ public class AdminController implements Initializable {
 	 		
 	 		// Add user types
 	 		for(String s : userTypes){
-	 			System.out.println(s);
 	 			if(!usertypeList.contains(s)){
 	 				AdminController.usertypeList.add(s);
 	 			}

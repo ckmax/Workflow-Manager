@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.User;
 import model.WorkflowEntry;
 import model.WorkflowInstance;
@@ -69,9 +70,6 @@ public class DashboardController implements Initializable {
 		
 		data.add(wfe);
 		
-		//Initialize form
-		//initializeForm();
-		
 	}
 	
 	/**
@@ -95,6 +93,8 @@ public class DashboardController implements Initializable {
 				stage.setTitle("Codeflow");
 				
 				multipleFormStage = stage;
+				
+				multipleFormStage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> clearTable());
 							
 				stage.show(); // Pop-up form stage
 							
@@ -102,6 +102,11 @@ public class DashboardController implements Initializable {
 				e.printStackTrace();
 			}
 		
+	}
+	
+	
+	public void clearTable(){
+		MultipleFormController.data.removeAll(MultipleFormController.data);
 	}
 	
 	
@@ -155,6 +160,8 @@ public class DashboardController implements Initializable {
 			stage.setScene(scene);
 			stage.setResizable(false);
 			stage.setTitle("Codeflow");
+			
+			SelectStructureController.loginStage = stage;
 						
 			stage.show(); // Pop-up login stage
 			

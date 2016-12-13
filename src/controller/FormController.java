@@ -7,12 +7,14 @@ import application.WorkflowManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -94,7 +96,6 @@ public class FormController implements Initializable {
 						}
 					});
 
-	            	MultipleFormController.formStage.close();
 	            	 	
 	            }
 	        });
@@ -118,7 +119,27 @@ public class FormController implements Initializable {
 	            	int i = MultipleFormController.data.indexOf(MultipleFormController.selectedForm);
 	            	MultipleFormController.data.remove(i);
 	            	MultipleFormController.data.add(MultipleFormController.selectedForm);
-//	            	System.out.println(MultipleFormController.selectedForm.isCompleted());
+	            	System.out.println(MultipleFormController.selectedForm.isCompleted());
+	            	
+	            	/*
+	            	try{
+	            		
+		            	//Load secondary controller
+		        		
+		        		FXMLLoader loader = new FXMLLoader();
+		        				
+		        		loader.setLocation(getClass().getResource("/view/MultipleForm.fxml"));
+		        		
+		        		BorderPane root = (BorderPane) loader.load();
+		        		
+		        		MultipleFormController controller = loader.getController();
+		        		
+		        		controller.updateTable();
+	        		
+	            	}catch(Exception e){
+	            		
+	            	}*/
+	            	
 	            	
 	            	MultipleFormController.formStage.close();
 	            }

@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Form;
+import model.User;
 import model.WorkflowInstance;
 
 public class MultipleFormController implements Initializable {
@@ -35,15 +36,21 @@ public class MultipleFormController implements Initializable {
 	
 	public static ObservableList<Form> data = FXCollections.observableArrayList();
 	
+	public  ObservableList<Form> tempFormList = FXCollections.observableArrayList();
+	
 	public void setUpFormTable(){
-		
-		LoginController.currentUser.getInvolvesIn();
-		
+				
 		//Call getForms from the WorkflowManager
 		
 		WorkflowInstance wfi = WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId()));
 		
-		List<Form> forms = WorkflowManager.getForms(LoginController.currentUser, wfi);
+		//List<Form> forms = WorkflowManager.getForms(LoginController.currentUser, wfi);
+		
+		List<Form> forms = wfi.getForms();
+		
+		if(forms == null){
+			System.out.println("NULL");
+		}
 		
 		forms.forEach(form -> {
 			System.out.println(form.getName());
@@ -68,6 +75,24 @@ public class MultipleFormController implements Initializable {
 		    }
 		});
 				
+		
+	}
+	
+	public void updateTable(){
+		
+		//Way to update the table after editing
+		
+		for(Form f : data){
+			tempFormList.add(f);
+		}
+		
+		data.removeAll(data);
+		
+		for(Form f : tempFormList){
+			data.add(f);
+		}
+		
+		tempFormList.removeAll(tempFormList);
 		
 	}
 	

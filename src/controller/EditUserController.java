@@ -34,10 +34,6 @@ public class EditUserController implements Initializable {
 		
 		AdminController controller = loader.getController();
 		
-		if(controller == null){
-			System.out.println("NULL");
-		}
-		
 		//Retrieve values
 		String name = nameTF.getText();
 		
