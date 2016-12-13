@@ -325,7 +325,10 @@ public final class WorkflowManager {
     public static void debug() {
         try {
             workflowInstanceHashMap.forEach((integer, workflowInstance) -> {
-                System.out.println(workflowInstance.getId());
+                System.out.println();
+                System.out.println("------------------");
+                System.out.println("------------------");
+                System.out.println("WorkflowInstanceID: " + workflowInstance.getId());
                 System.out.println("---------Completed states---------");
                 workflowInstance.getCompletedStates().forEach(state -> System.out.println(state.getId() + ", " + state.getName()));
                 System.out.println("---------Current State(s)---------");
@@ -337,6 +340,10 @@ public final class WorkflowManager {
                         System.out.println("    (" + field.getType() + ") " + field.getName() + ": " + field.getValue());
                     });
                 });
+                System.out.println("------------------");
+                System.out.println("------------------");
+                System.out.println();
+                System.out.println();
             });
         } catch (NullPointerException e) {
             System.out.println("Something is null");

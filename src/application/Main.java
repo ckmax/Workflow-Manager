@@ -3,9 +3,9 @@ package application;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 /**
  * 
@@ -30,6 +30,15 @@ public class Main extends Application {
 			UserManager.createUser("Lisa", "2", "2", "GradSecretary", "max@gmail.com");
 			UserManager.createUser("John", "3", "3", "GradDean", "max@gmail.com");
 			UserManager.createUser("Mike", "4", "4", "SASDean", "max@gmail.com");
+
+			Button debugButton = new Button();
+			debugButton.setText("print all WorkflowInstances");
+			debugButton.setPrefSize(300, 30);
+			debugButton.setOnAction(event -> WorkflowManager.debug());
+			Stage debugStage = new Stage();
+			debugStage.setScene(new Scene(debugButton));
+			debugStage.show();
+
 			
 			// Load FXML file	
 			FXMLLoader loader = new FXMLLoader();
