@@ -323,20 +323,25 @@ public final class WorkflowManager {
      *
      */
     public static void debug() {
-        workflowInstanceHashMap.forEach((integer, workflowInstance) -> {
-            System.out.println(workflowInstance.getId());
-            System.out.println("---------Completed states---------");
-            workflowInstance.getCompletedStates().forEach(state -> System.out.println(state.getId() + ", " + state.getName()));
-            System.out.println("---------Current State(s)---------");
-            workflowInstance.getCurrentStates().forEach(state -> System.out.println(state.getId() + ", " + state.getName()));
-            System.out.println("---------Forms---------");
-            workflowInstance.getForms().forEach(form -> {
-                System.out.println(form.getId() + ", " + form.getName() + ", completed: " + form.isCompleted());
-                form.getFields().forEach(field -> {
-                    System.out.println("    (" + field.getType() + ") " + field.getName() + ": " + field.getValue());
+        try {
+            workflowInstanceHashMap.forEach((integer, workflowInstance) -> {
+                System.out.println(workflowInstance.getId());
+                System.out.println("---------Completed states---------");
+                workflowInstance.getCompletedStates().forEach(state -> System.out.println(state.getId() + ", " + state.getName()));
+                System.out.println("---------Current State(s)---------");
+                workflowInstance.getCurrentStates().forEach(state -> System.out.println(state.getId() + ", " + state.getName()));
+                System.out.println("---------Forms---------");
+                workflowInstance.getForms().forEach(form -> {
+                    System.out.println(form.getId() + ", " + form.getName() + ", completed: " + form.isCompleted());
+                    form.getFields().forEach(field -> {
+                        System.out.println("    (" + field.getType() + ") " + field.getName() + ": " + field.getValue());
+                    });
                 });
             });
-        });
+        } catch (NullPointerException e) {
+            System.out.println("Something is null");
+            e.printStackTrace();
+        }
     }
 
 }
