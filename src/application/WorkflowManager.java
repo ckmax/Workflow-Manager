@@ -129,8 +129,6 @@ public final class WorkflowManager {
 
         WorkflowInstance wfi = new WorkflowInstance(wfs, assignWorkflowID(), wfs.getFirstState());
 
-        user.addWorkflow(wfi);
-
         Integer workflowID = wfi.getId();
         workflowInstanceHashMap.put(workflowID, wfi);
         UserManager.addNewWorkflowInstance(wfi);
