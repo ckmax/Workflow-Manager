@@ -11,7 +11,7 @@ public class User implements Serializable {
     private String password;
     private String userType;
     private String email;
-    private List<String> messages;
+    private List<Message> messages;
     private boolean loggedIn;
     private List<WorkflowInstance> involvesIn;
 
@@ -42,7 +42,7 @@ public class User implements Serializable {
         return email;
     }
 
-    public List<String> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
@@ -71,7 +71,7 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public void addMessage(String message) {
+    public void addMessage(Message message) {
         this.messages.add(message);
     }
 
