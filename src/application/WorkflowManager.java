@@ -23,7 +23,7 @@ public final class WorkflowManager {
     public static final String userCodeLocation = "";
 
     private static HashMap<Integer, WorkflowInstance> workflowInstanceHashMap = null;
-    private static final String dataFilePath = "workflowData.dat";
+    public static final String dataFilePath = "workflowData.dat";
 
     public static WorkflowStructure parse(String filePath) {
         try {

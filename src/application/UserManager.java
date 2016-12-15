@@ -17,7 +17,7 @@ import java.util.List;
 
 public final class UserManager {
 
-    private static final String dataFilePath = "userData.dat";
+    public static final String dataFilePath = "userData.dat";
 
 	private static HashMap<String, User> userHashMap = null;
 

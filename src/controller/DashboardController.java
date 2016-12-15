@@ -48,7 +48,7 @@ public class DashboardController implements Initializable {
 	@FXML private Text usernameTF;
 	@FXML private Button initializeBtn;
 	@FXML private Button removeBtn;
-	
+		
 	public static WorkflowEntry selectedWorkflowEntry;
 	
 	public static Stage multipleFormStage;
@@ -75,7 +75,7 @@ public class DashboardController implements Initializable {
 		WorkflowInstance wfi = WorkflowManager.getWorkflowInstance(workflowInstanceId);
 		
 		
-		WorkflowEntry wfe = new WorkflowEntry(wfi.getId() + "", wfi.getWorkflowStructure().getFirstState().getName());
+		WorkflowEntry wfe = new WorkflowEntry(wfi.getId() + "", wfi.getWorkflowStructure().getFirstState().getName(), "Required");
 		
 		
 		data.add(wfe);
@@ -104,7 +104,7 @@ public class DashboardController implements Initializable {
 				
 				multipleFormStage = stage;
 				
-				multipleFormStage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+				multipleFormStage.addEventHandler(WindowEvent.WINDOW_HIDDEN, event -> {
 					initializeTable();
 					updateTable();
 				});
@@ -123,6 +123,8 @@ public class DashboardController implements Initializable {
 	 * Initialize the table on the dashboard
 	 */
 	public void initializeTable(){
+		
+		data.removeAll(data);
 	   
 		List<WorkflowInstance> wfiList = LoginController.currentUser.getInvolvesIn();
 		
@@ -138,7 +140,7 @@ public class DashboardController implements Initializable {
 			
 			if(currentStateOfUser != null){
 			
-				WorkflowEntry wfe = new WorkflowEntry(w.getId() + "", currentStateOfUser.getName());
+				WorkflowEntry wfe = new WorkflowEntry(w.getId() + "", currentStateOfUser.getName(), "Required");
 				
 				data.add(wfe);
 			} else {
@@ -152,7 +154,7 @@ public class DashboardController implements Initializable {
 							currentStatesNames = "Completed";
 						}
 						
-						WorkflowEntry wfe1 = new WorkflowEntry(w.getId() + "", currentStatesNames);
+						WorkflowEntry wfe1 = new WorkflowEntry(w.getId() + "", currentStatesNames, "Completed");
 						if(!data.contains(wfe1)){
 							data.add(wfe1);
 						}
@@ -263,12 +265,23 @@ public class DashboardController implements Initializable {
 		workflowName.setCellValueFactory(
                 new PropertyValueFactory<WorkflowEntry, String>("id"));
 		
+		workflowName.setPrefWidth(150.0);
+		
 		TableColumn info = new TableColumn("Current State");
 		
 	   info.setCellValueFactory(
                 new PropertyValueFactory<WorkflowEntry, String>("currentState"));
+	   
+	   info.setPrefWidth(200.0);
+	   
+	   TableColumn action = new TableColumn("Action");
+		
+	   action.setCellValueFactory(
+                new PropertyValueFactory<WorkflowEntry, String>("action"));
+	   
+	   action.setPrefWidth(150.0);
        
-		tableView.getColumns().addAll(workflowName,info);
+		tableView.getColumns().addAll(workflowName,info,action);
 	}
 
 	public boolean checkUser(User user){
@@ -279,8 +292,8 @@ public class DashboardController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
-		usernameTF.setText(LoginController.currentUser.getUsername());
-		workflowNameTF.setText(SelectStructureController.selectedStructure);
+		usernameTF.setText(LoginController.currentUser.getName());
+		workflowNameTF.setText(SelectStructureController.selectedStructure + " - " + LoginController.currentUser.getUserType());
 		
 		//Initialize the new/remove buttons
 		if(!checkUser(LoginController.currentUser)){

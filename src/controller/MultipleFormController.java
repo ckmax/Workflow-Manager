@@ -19,11 +19,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Form;
-import model.User;
+import model.State;
 import model.WorkflowInstance;
 
 public class MultipleFormController implements Initializable {
@@ -40,6 +39,7 @@ public class MultipleFormController implements Initializable {
 	public  ObservableList<Form> tempFormList = FXCollections.observableArrayList();
 	
 	boolean canSubmit = false;
+	State currentState = null;
 	
 	String currentStatesNames;
 	
@@ -144,48 +144,20 @@ public class MultipleFormController implements Initializable {
 	
 	public void submitBtn(){
 		
-		if(!WorkflowManager.transition(WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())))){
-			
+		WorkflowInstance wfi = WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId()));		
+		
+		wfi.getCurrentStates().forEach(state -> {
+			if(state.getUserType().equals(LoginController.currentUser.getUserType())){
+				currentState = state;
+			}
+		});
+		
+		if(!WorkflowManager.transition(wfi, currentState )){
 			//Error Message
 			errorMsg.setText("Please complete all the forms");
-			
-			
 		}else{
-			/*
-			currentStatesNames = "";
-			w.getCurrentStates().forEach(state1 -> {
-				currentStatesNames += state1.getName() + " ";
-			});
-			if(currentStatesNames.equals("")){
-				currentStatesNames = "Completed";
-			}*/
-			
-			/*
-			try{
-        		
-            	//Load secondary controller
-        		
-        		FXMLLoader loader = new FXMLLoader();
-        				
-        		loader.setLocation(getClass().getResource("/view/Dashboard.fxml"));
-        		
-        		AnchorPane root = (AnchorPane) loader.load();
-        		
-        		DashboardController controller = loader.getController();
-        		
-        		System.out.println("REACH");
-        		controller.initializeTable();
-    		
-        	}catch(Exception e){
-        		e.printStackTrace();
-        	}*/
-			
-			DashboardController.multipleFormStage.close();
-			
+			DashboardController.multipleFormStage.close();	
 		}
-		
-		
-		
 	}
 
 

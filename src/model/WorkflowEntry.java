@@ -4,10 +4,12 @@ public class WorkflowEntry {
 
 	private String id;
 	private String currentState;
+	private String action;
 	
-	public WorkflowEntry(String id, String currentState){
+	public WorkflowEntry(String id, String currentState, String action){
 		this.id = id;
 		this.currentState = currentState;
+		this.action = action;
 	}
 	
 	
@@ -37,4 +39,14 @@ public class WorkflowEntry {
 
         return this.getId().equals(workflowEntry.getId());
     }
+
+
+	public String getAction() {
+		return action;
+	}
+
+
+	public void setAction(String action) {
+		this.action = action;
+	}
 }
