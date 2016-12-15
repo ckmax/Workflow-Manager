@@ -240,6 +240,16 @@ public final class UserManager {
         return userTypeList;
     }
 
+    public static Collection<User> getUsers(WorkflowInstance wfi) {
+        Collection<User> users = userHashMap.values();
+        users.forEach(user -> {
+            if (!wfi.getWorkflowStructure().getUserTypes().contains(user.getUserType())) {
+                users.remove(user);
+            }
+        });
+        return users;
+    }
+
     public static Collection<User> getInvolvesIn(WorkflowInstance wfi) {
         Collection<User> users = new ArrayList<>();
         userHashMap.forEach((s, user) -> {
