@@ -144,6 +144,10 @@ public final class WorkflowManager {
         return workflowInstanceHashMap.get(id);
     }
 
+    public static void removeWorkflowInstance(int id) {
+        workflowInstanceHashMap.remove(id);
+    }
+
     /**
      * Move token to the next state(s) when a transition is made
      * call notify to email the appropriate users
