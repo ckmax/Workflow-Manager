@@ -95,5 +95,9 @@ public class User implements Serializable {
     public void logout() {
         this.loggedIn = false;
     }
-    
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
