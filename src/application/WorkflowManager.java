@@ -1,47 +1,24 @@
 package application;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import model.*;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.input.SAXBuilder;
-
-import model.BranchState;
-import model.Connection;
-import model.Field;
-import model.Form;
-import model.LinearState;
-import model.MergeState;
-import model.ProgrammerCode;
-import model.SelectionState;
-import model.State;
-import model.User;
-import model.WorkflowInstance;
-import model.WorkflowStructure;
+import java.util.*;
 
 public final class WorkflowManager {
 
-    public static final String xmlLocation = "";
-    public static final String userCodeLocation = "";
-
-    private static HashMap<Integer, WorkflowInstance> workflowInstanceHashMap = null;
+    public static final String userCodeLocation = "../Codes/";
     private static final String dataFilePath = "workflowData.dat";
+    private static HashMap<Integer, WorkflowInstance> workflowInstanceHashMap = null;
 
     public static WorkflowStructure parse(String filePath) {
         try {
@@ -136,14 +113,15 @@ public final class WorkflowManager {
         }
     }
 
-	/**
-	 * Parse the XML file, get a Document object and create a Workflow instance from the Document
-	 * @param user
+    /**
+     * Parse the XML file, get a Document object and create a Workflow instance from the Document
+     *
+     * @param user
      * @param wfs
-	 * @return
-	 */
-	public static Integer instantiate(User user, WorkflowStructure wfs){
-		if (workflowInstanceHashMap == null) {
+     * @return
+     */
+    public static Integer instantiate(User user, WorkflowStructure wfs) {
+        if (workflowInstanceHashMap == null) {
             workflowInstanceHashMap = new HashMap<>();
         }
 
@@ -154,23 +132,24 @@ public final class WorkflowManager {
         UserManager.addNewWorkflowInstance(wfi);
 
         return workflowID;
-	}
+    }
 
     /**
      * Get a workflowInstance from id
+     *
      * @param id
      * @return
      */
     public static WorkflowInstance getWorkflowInstance(int id) {
-	    return workflowInstanceHashMap.get(id);
+        return workflowInstanceHashMap.get(id);
     }
-	
-	/**
-	 * 
-	 * Move token to the next state(s) when a transition is made
-	 * call notify to email the appropriate users
-	 * @param wfi
-	 */
+
+    /**
+     * Move token to the next state(s) when a transition is made
+     * call notify to email the appropriate users
+     *
+     * @param wfi
+     */
 //	public static boolean transition(WorkflowInstance wfi, State selectedState){
 //		if (checkTransSrc(wfi) && checkTransDest(wfi)) {
 //		    wfi.getCurrentStates().forEach(state -> {
@@ -189,7 +168,6 @@ public final class WorkflowManager {
 //        }
 //        return false;
 //	}
-
     public static boolean transition(WorkflowInstance wfi, State selectedState) {
         if (checkSrcState(wfi, selectedState) && checkDestState(wfi, selectedState)) {
             if (selectedState instanceof MergeState) {
@@ -221,19 +199,19 @@ public final class WorkflowManager {
         return false;
     }
 
-	private static boolean checkSrcState(WorkflowInstance wfi, State state) {
-	    return state.canLeave(wfi);
+    private static boolean checkSrcState(WorkflowInstance wfi, State state) {
+        return state.canLeave(wfi);
     }
 
     private static boolean checkDestState(WorkflowInstance wfi, State state) {
-	    return state.canEnter(wfi);
+        return state.canEnter(wfi);
     }
-	
-	/**
-	 * Check if the end user has done everything required to do in current state(s)
-	 * @param wfi
-	 * @return
-	 */
+
+    /**
+     * Check if the end user has done everything required to do in current state(s)
+     * @param wfi
+     * @return
+     */
 //	private static boolean checkTransSrc(WorkflowInstance wfi){
 //        Set<State> states = wfi.getCurrentStates();
 //        for (State state : states) {
@@ -243,12 +221,12 @@ public final class WorkflowManager {
 //        }
 //        return true;
 //	}
-	
-	/**
-	 * Check if the end user has done everything in all previous state(s)
-	 * @param wfi
-	 * @return
-	 */
+
+    /**
+     * Check if the end user has done everything in all previous state(s)
+     * @param wfi
+     * @return
+     */
 //	private static boolean checkTransDest(WorkflowInstance wfi){
 //        Set<State> nextStates = new HashSet<>();
 //        wfi.getCurrentStates().forEach(state -> nextStates.addAll(state.getNextStates(wfi)));
@@ -259,27 +237,27 @@ public final class WorkflowManager {
 //        }
 //        return true;
 //	}
-	
-	/**
-	 * Invoke java method provided by wf programmer
-	 * @param packageName
+
+    /**
+     * Invoke java method provided by wf programmer
+     *
+     * @param packageName
      * @param className
      * @param methodName
      * @param args
-	 * @return
-	 */
-	public static boolean invokeProgrammerMethod(String packageName, String className, String methodName, Object... args)
-        throws MalformedURLException,
+     * @return
+     */
+    public static boolean invokeProgrammerMethod(String packageName, String className, String methodName, Object... args)
+            throws MalformedURLException,
             ClassNotFoundException,
             NoSuchMethodException,
             InstantiationException,
             IllegalAccessException,
-            InvocationTargetException
-    {
-		File file = new File(userCodeLocation);
+            InvocationTargetException {
+        File file = new File(userCodeLocation);
 
-		URL url = file.toURI().toURL();
-        URL[] urls = new URL[] {url};
+        URL url = file.toURI().toURL();
+        URL[] urls = new URL[]{url};
 
         ClassLoader cl = new URLClassLoader(urls);
 
@@ -301,40 +279,41 @@ public final class WorkflowManager {
 
         method.invoke(aClass.newInstance(), args);
 
-	    return false;
-	}
-	
-	/**
-	 * Send an email notification to the user types specified in the XML file by the workflow programmer
-	 * The notify function can extend further to create a notification system on the user interface. 
-	 * This will be done as time permits.
-	 * @return
-	 */
-	public static void notifyUser(User receiver, String message){
+        return false;
+    }
+
+    /**
+     * Send an email notification to the user types specified in the XML file by the workflow programmer
+     * The notify function can extend further to create a notification system on the user interface.
+     * This will be done as time permits.
+     *
+     * @return
+     */
+    public static void notifyUser(User receiver, String message) {
         receiver.addMessage(message);
-	}
-	
-	/**
-	 * Terminates an ongoing workflow instance and removes all the tokens associated with that workflow instance
-	 * @param workflowID
-	 */
-	public static void endWorkflow(int workflowID){
-		UserManager.getInvolvesIn(workflowInstanceHashMap.get(workflowID))
+    }
+
+    /**
+     * Terminates an ongoing workflow instance and removes all the tokens associated with that workflow instance
+     *
+     * @param workflowID
+     */
+    public static void endWorkflow(int workflowID) {
+        UserManager.getInvolvesIn(workflowInstanceHashMap.get(workflowID))
                 .forEach(user -> notifyUser(user, workflowID + " is terminated"));
 
-	    return;
-	}
+        return;
+    }
 
-	/**
-	 *
-	 * @param user
-	 * @param wfi
-	 * @return
-	 */
-	public static List<Form> getForms(User user, WorkflowInstance wfi) {
-	    List<Form> forms = new ArrayList<>();
-	    wfi.getCurrentStates().forEach(state -> {
-	        if (state.getUserType().equals(user.getUserType())) {
+    /**
+     * @param user
+     * @param wfi
+     * @return
+     */
+    public static List<Form> getForms(User user, WorkflowInstance wfi) {
+        List<Form> forms = new ArrayList<>();
+        wfi.getCurrentStates().forEach(state -> {
+            if (state.getUserType().equals(user.getUserType())) {
                 forms.addAll(state.getForms());
             }
         });
@@ -343,9 +322,10 @@ public final class WorkflowManager {
 
     /**
      * Give a new workflowID based on current time. Duplicate avoided.
+     *
      * @return the new workflowID
      */
-	private static int assignWorkflowID() {
+    private static int assignWorkflowID() {
         return Instant.now().hashCode();
     }
 
@@ -359,33 +339,34 @@ public final class WorkflowManager {
             e.printStackTrace();
         }
     }
-    
-    protected static void deserialize(){
-		
-		//File f = new File(WorkflowManager.get);
-		//if(f.exists() && !f.isDirectory()) { 
-			try {
-		         FileInputStream fileIn = new FileInputStream(WorkflowManager.dataFilePath);
-		         
-		         ObjectInputStream in = new ObjectInputStream(fileIn);
-		         workflowInstanceHashMap = (HashMap<Integer,WorkflowInstance>)in.readObject();
-		         
-		         in.close();
-		         fileIn.close();
-		      }catch(Exception i) {
-		         i.printStackTrace();
-		         return;
-		      }
-		//}
-	}
+
+    protected static void deserialize() {
+
+        //File f = new File(WorkflowManager.get);
+        //if(f.exists() && !f.isDirectory()) {
+        try {
+            FileInputStream fileIn = new FileInputStream(WorkflowManager.dataFilePath);
+
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            workflowInstanceHashMap = (HashMap<Integer, WorkflowInstance>) in.readObject();
+
+            in.close();
+            fileIn.close();
+        } catch (FileNotFoundException fnfe) {
+            workflowInstanceHashMap = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //}
+    }
 
     protected static void updateDataForNewUser(User user) {
-	    if (workflowInstanceHashMap == null) {
-	        return;
+        if (workflowInstanceHashMap == null) {
+            return;
         }
-	    workflowInstanceHashMap.forEach((integer, workflowInstance) -> {
-	        if (workflowInstance.getWorkflowStructure().getUserTypes().contains(user.getUserType())) {
-	            user.addWorkflow(workflowInstance);
+        workflowInstanceHashMap.forEach((integer, workflowInstance) -> {
+            if (workflowInstance.getWorkflowStructure().getUserTypes().contains(user.getUserType())) {
+                user.addWorkflow(workflowInstance);
             }
         });
     }
