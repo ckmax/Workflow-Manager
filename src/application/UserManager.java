@@ -242,10 +242,10 @@ public final class UserManager {
     }
 
     public static Collection<User> getUsers(WorkflowStructure wfs) {
-        Collection<User> users = userHashMap.values();
-        users.forEach(user -> {
-            if (!wfs.getUserTypes().contains(user.getUserType())) {
-                users.remove(user);
+        Collection<User> users = new ArrayList<>();
+        userHashMap.values().forEach(user -> {
+            if (wfs.getUserTypes().contains(user.getUserType())) {
+                users.add(user);
             }
         });
         return users;
