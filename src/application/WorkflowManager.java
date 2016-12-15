@@ -153,55 +153,94 @@ public final class WorkflowManager {
 	 * call notify to email the appropriate users
 	 * @param wfi
 	 */
-	public static boolean transition(WorkflowInstance wfi){
-		if (checkTransSrc(wfi) && checkTransDest(wfi)) {
-		    wfi.getCurrentStates().forEach(state -> {
-		        state.getProgrammerCodes().forEach(programmerCode -> {
-		            try {
-		                invokeProgrammerMethod(programmerCode.getPackageName(),
+//	public static boolean transition(WorkflowInstance wfi, State selectedState){
+//		if (checkTransSrc(wfi) && checkTransDest(wfi)) {
+//		    wfi.getCurrentStates().forEach(state -> {
+//		        state.getProgrammerCodes().forEach(programmerCode -> {
+//		            try {
+//		                invokeProgrammerMethod(programmerCode.getPackageName(),
+//                                programmerCode.getClassName(),
+//                                programmerCode.getMethodName());
+//                    } catch (Exception e) {
+//		                e.printStackTrace();
+//                    }
+//                });
+//            });
+//		    wfi.nextStates();
+//		    return true;
+//        }
+//        return false;
+//	}
+
+    public static boolean transition(WorkflowInstance wfi, State selectedState) {
+        if (checkSrcState(wfi, selectedState) && checkDestState(wfi, selectedState)) {
+            if (selectedState instanceof MergeState) {
+                wfi.getWorkflowStructure().getState(
+                        ((MergeState) selectedState).getPairedStateID()).
+                        getProgrammerCodes().forEach(programmerCode -> {
+                    try {
+                        invokeProgrammerMethod(programmerCode.getPackageName(),
                                 programmerCode.getClassName(),
                                 programmerCode.getMethodName());
                     } catch (Exception e) {
-		                e.printStackTrace();
+                        e.printStackTrace();
                     }
                 });
+            }
+
+            selectedState.getProgrammerCodes().forEach(programmerCode -> {
+                try {
+                    invokeProgrammerMethod(programmerCode.getPackageName(),
+                            programmerCode.getClassName(),
+                            programmerCode.getMethodName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
-		    wfi.nextStates();
-		    return true;
+            wfi.nextState(selectedState);
+            return true;
         }
         return false;
-	}
+    }
+
+	private static boolean checkSrcState(WorkflowInstance wfi, State state) {
+	    return state.canLeave(wfi);
+    }
+
+    private static boolean checkDestState(WorkflowInstance wfi, State state) {
+	    return state.canEnter(wfi);
+    }
 	
 	/**
 	 * Check if the end user has done everything required to do in current state(s)
 	 * @param wfi
 	 * @return
 	 */
-	public static boolean checkTransSrc(WorkflowInstance wfi){
-        Set<State> states = wfi.getCurrentStates();
-        for (State state : states) {
-            if (!state.canLeave(wfi)) {
-                return false;
-            }
-        }
-        return true;
-	}
+//	private static boolean checkTransSrc(WorkflowInstance wfi){
+//        Set<State> states = wfi.getCurrentStates();
+//        for (State state : states) {
+//            if (!state.canLeave(wfi)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//	}
 	
 	/**
 	 * Check if the end user has done everything in all previous state(s)
 	 * @param wfi
 	 * @return
 	 */
-	public static boolean checkTransDest(WorkflowInstance wfi){
-        Set<State> nextStates = new HashSet<>();
-        wfi.getCurrentStates().forEach(state -> nextStates.addAll(state.getNextStates(wfi)));
-        for (State state : nextStates) {
-            if (!state.canEnter(wfi)) {
-                return false;
-            }
-        }
-        return true;
-	}
+//	private static boolean checkTransDest(WorkflowInstance wfi){
+//        Set<State> nextStates = new HashSet<>();
+//        wfi.getCurrentStates().forEach(state -> nextStates.addAll(state.getNextStates(wfi)));
+//        for (State state : nextStates) {
+//            if (!state.canEnter(wfi)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//	}
 	
 	/**
 	 * Invoke java method provided by wf programmer

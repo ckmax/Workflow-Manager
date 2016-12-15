@@ -44,12 +44,24 @@ public class WorkflowInstance implements Serializable {
         return completedStates;
     }
 
-    public void nextStates() {
-        Set<State> nextStates = new HashSet<>();
-        this.currentStates.forEach(state -> nextStates.addAll(state.getNextStates(this)));
-        completedStates.addAll(this.currentStates);
-        this.currentStates = nextStates;
-        nextStates.forEach(state -> state.getForms().forEach(form -> this.forms.add(form.deepClone())));
+//    public void nextStates() {
+//        Set<State> nextStates = new HashSet<>();
+//        this.currentStates.forEach(state -> nextStates.addAll(state.getNextStates(this)));
+//        this.completedStates.addAll(this.currentStates);
+//        this.currentStates = nextStates;
+//        nextStates.forEach(state -> state.getForms().forEach(form -> this.forms.add(form.deepClone())));
+//    }
+
+    public void nextState(State state) {
+        if (state instanceof MergeState) {
+            this.completedStates.add(this.workflowStructure.getState(((MergeState) state).getPairedStateID()));
+            this.currentStates.remove(this.workflowStructure.getState(((MergeState) state).getPairedStateID()));
+        }
+        this.completedStates.add(state);
+        this.currentStates.remove(state);
+        Set<State> nextStates = state.getNextStates(this);
+        this.currentStates.addAll(nextStates);
+        nextStates.forEach(nextState -> nextState.getForms().forEach(form -> this.forms.add(form.deepClone())));
     }
 
     public List<Form> getForms() {

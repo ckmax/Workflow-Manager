@@ -25,4 +25,8 @@ public class MergeState extends State implements Serializable {
     private boolean done(WorkflowInstance wfi) {
         return super.canLeave(wfi);
     }
+
+    public String getPairedStateID() {
+        return pairedStateID;
+    }
 }
