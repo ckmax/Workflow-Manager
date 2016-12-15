@@ -1,13 +1,10 @@
 package application;
 
-import model.*;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.input.SAXBuilder;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -15,7 +12,28 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+
+import model.BranchState;
+import model.Connection;
+import model.Field;
+import model.Form;
+import model.LinearState;
+import model.MergeState;
+import model.ProgrammerCode;
+import model.SelectionState;
+import model.State;
+import model.User;
+import model.WorkflowInstance;
+import model.WorkflowStructure;
 
 public final class WorkflowManager {
 
@@ -23,7 +41,7 @@ public final class WorkflowManager {
     public static final String userCodeLocation = "";
 
     private static HashMap<Integer, WorkflowInstance> workflowInstanceHashMap = null;
-    public static final String dataFilePath = "workflowData.dat";
+    private static final String dataFilePath = "workflowData.dat";
 
     public static WorkflowStructure parse(String filePath) {
         try {
@@ -341,6 +359,25 @@ public final class WorkflowManager {
             e.printStackTrace();
         }
     }
+    
+    protected static void deserialize(){
+		
+		//File f = new File(WorkflowManager.get);
+		//if(f.exists() && !f.isDirectory()) { 
+			try {
+		         FileInputStream fileIn = new FileInputStream(WorkflowManager.dataFilePath);
+		         
+		         ObjectInputStream in = new ObjectInputStream(fileIn);
+		         workflowInstanceHashMap = (HashMap<Integer,WorkflowInstance>)in.readObject();
+		         
+		         in.close();
+		         fileIn.close();
+		      }catch(Exception i) {
+		         i.printStackTrace();
+		         return;
+		      }
+		//}
+	}
 
     protected static void updateDataForNewUser(User user) {
 	    if (workflowInstanceHashMap == null) {

@@ -7,8 +7,10 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -293,6 +295,26 @@ public final class UserManager {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Deserialize userHashMap
+     */
+    protected static void deserialize(){
+		
+		//File f = new File(WorkflowManager.get);
+		//if(f.exists() && !f.isDirectory()) { 
+			try {
+		         FileInputStream fileIn = new FileInputStream(dataFilePath);
+		         ObjectInputStream in = new ObjectInputStream(fileIn);
+		         userHashMap = (HashMap<String,User>)in.readObject();
+		         in.close();
+		         fileIn.close();
+		      }catch(Exception i) {
+		         i.printStackTrace();
+		         return;
+		      }
+		//}
+	}
 
     /**
      * Delete all user data

@@ -24,6 +24,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		
+		UserManager.deserialize();
+		WorkflowManager.deserialize();
+		
 		try {
 			
 			/*
@@ -31,10 +34,6 @@ public class Main extends Application {
 			UserManager.createUser("Lisa", "2", "2", "GradSecretary", "max@gmail.com");
 			UserManager.createUser("John", "3", "3", "GradDean", "max@gmail.com");
 			UserManager.createUser("Mike", "4", "4", "SASDean", "max@gmail.com");*/
-
-			UserManager.createUser("Lisa", "1", "1", "Manager", "max@gmail.com");
-			UserManager.createUser("John", "2", "2", "Employee1", "max@gmail.com");
-			UserManager.createUser("Mike", "3", "3", "Employee2", "max@gmail.com");
 			
 			Button debugButton = new Button();
 			debugButton.setText("print all WorkflowInstances");
@@ -63,23 +62,7 @@ public class Main extends Application {
 		}
 	}
 	
-	public void deserialize(){
-		
-		//File f = new File(WorkflowManager.get);
-		//if(f.exists() && !f.isDirectory()) { 
-			try {
-		         FileInputStream fileIn = new FileInputStream("users.ser");
-		         ObjectInputStream in = new ObjectInputStream(fileIn);
-		         List<User> userList = (List<User>)in.readObject();
-		         AdminController.userlist = FXCollections.observableList(userList);
-		         in.close();
-		         fileIn.close();
-		      }catch(IOException i) {
-		         i.printStackTrace();
-		         return;
-		      }
-		//}
-	}
+	
 	
 	@Override
 	public void stop(){
