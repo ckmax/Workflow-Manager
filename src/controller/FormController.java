@@ -30,9 +30,6 @@ public class FormController implements Initializable {
 	//Gonna receive a list of fields, and know what kind of user this is 
 	public void populateForm(){
 		
-		//
-		
-				
 		final VBox vbox = new VBox();
 	    final HBox hbox = new HBox();
 	    
@@ -116,12 +113,11 @@ public class FormController implements Initializable {
 									form.setCompleted();
 								}
 					});
-	            	int i = MultipleFormController.data.indexOf(MultipleFormController.selectedForm);
-	            	MultipleFormController.data.remove(i);
-	            	MultipleFormController.data.add(MultipleFormController.selectedForm);
-	            	System.out.println(MultipleFormController.selectedForm.isCompleted());
+	            	//int i = MultipleFormController.data.indexOf(MultipleFormController.selectedForm);
+	            	//MultipleFormController.data.remove(i);
+	            	//MultipleFormController.data.add(MultipleFormController.selectedForm);
 	            	
-	            	/*
+	            	
 	            	try{
 	            		
 		            	//Load secondary controller
@@ -137,8 +133,8 @@ public class FormController implements Initializable {
 		        		controller.updateTable();
 	        		
 	            	}catch(Exception e){
-	            		
-	            	}*/
+	            		e.printStackTrace();
+	            	}
 	            	
 	            	
 	            	MultipleFormController.formStage.close();

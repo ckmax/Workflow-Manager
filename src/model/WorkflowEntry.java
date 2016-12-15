@@ -26,4 +26,15 @@ public class WorkflowEntry {
 	public void setId(String info){
 		this.id = info;
 	}
+	
+	@Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof WorkflowEntry)) {
+            return false;
+        }
+
+        WorkflowEntry workflowEntry = (WorkflowEntry) obj;
+
+        return this.getId().equals(workflowEntry.getId());
+    }
 }

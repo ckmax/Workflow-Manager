@@ -19,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Form;
@@ -38,6 +39,10 @@ public class MultipleFormController implements Initializable {
 	
 	public  ObservableList<Form> tempFormList = FXCollections.observableArrayList();
 	
+	boolean canSubmit = false;
+	
+	String currentStatesNames;
+	
 	public void setUpFormTable(){
 				
 		//Call getForms from the WorkflowManager
@@ -48,13 +53,9 @@ public class MultipleFormController implements Initializable {
 		
 		List<Form> forms = wfi.getForms();
 		
-		if(forms == null){
-			System.out.println("NULL");
+		if(!data.isEmpty()){
+			data.removeAll(data);
 		}
-		
-		forms.forEach(form -> {
-			System.out.println(form.getName());
-		});
 		
 		// Add the forms to the observable list
 		for(Form f : forms){
@@ -142,9 +143,6 @@ public class MultipleFormController implements Initializable {
 	}
 	
 	public void submitBtn(){
-		WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).getCurrentStates().forEach(state -> {
-			System.out.println(state.getId() + " " + state.getForms());
-		});
 		
 		if(!WorkflowManager.transition(WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())))){
 			
@@ -153,17 +151,54 @@ public class MultipleFormController implements Initializable {
 			
 			
 		}else{
+			/*
+			currentStatesNames = "";
+			w.getCurrentStates().forEach(state1 -> {
+				currentStatesNames += state1.getName() + " ";
+			});
+			if(currentStatesNames.equals("")){
+				currentStatesNames = "Completed";
+			}*/
+			
+			/*
+			try{
+        		
+            	//Load secondary controller
+        		
+        		FXMLLoader loader = new FXMLLoader();
+        				
+        		loader.setLocation(getClass().getResource("/view/Dashboard.fxml"));
+        		
+        		AnchorPane root = (AnchorPane) loader.load();
+        		
+        		DashboardController controller = loader.getController();
+        		
+        		System.out.println("REACH");
+        		controller.initializeTable();
+    		
+        	}catch(Exception e){
+        		e.printStackTrace();
+        	}*/
 			
 			DashboardController.multipleFormStage.close();
-		};
-		WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).getCurrentStates().forEach(state -> {
-			System.out.println(state.getId() + " " + state.getForms());
-		});
+			
+		}
+		
+		
+		
 	}
 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		submitB.setVisible(false);
+		
+		WorkflowManager.getWorkflowInstance(Integer.parseInt(DashboardController.selectedWorkflowEntry.getId())).getCurrentStates().forEach(state -> {
+			if(state.getUserType().equals(LoginController.currentUser.getUserType())) {
+				submitB.setVisible(true);
+			}
+		});
 		
 		setUpFormTable();
 	

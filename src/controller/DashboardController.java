@@ -23,6 +23,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.Form;
+import model.State;
 import model.User;
 import model.WorkflowEntry;
 import model.WorkflowInstance;
@@ -52,7 +54,14 @@ public class DashboardController implements Initializable {
 	public static Stage multipleFormStage;
 	
 	
-	ObservableList<WorkflowEntry> data = FXCollections.observableArrayList();;
+	ObservableList<WorkflowEntry> data = FXCollections.observableArrayList();
+	
+	ObservableList<WorkflowEntry> tempData = FXCollections.observableArrayList();
+	
+	State currentStateOfUser = null;
+	
+	String currentStatesNames = "";
+
 	
 	/**
 	 * The button to instantiate the workflow call instantiate() from workflowManager class
@@ -67,6 +76,7 @@ public class DashboardController implements Initializable {
 		
 		
 		WorkflowEntry wfe = new WorkflowEntry(wfi.getId() + "", wfi.getWorkflowStructure().getFirstState().getName());
+		
 		
 		data.add(wfe);
 		
@@ -94,7 +104,11 @@ public class DashboardController implements Initializable {
 				
 				multipleFormStage = stage;
 				
-				multipleFormStage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> clearTable());
+				multipleFormStage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+					initializeTable();
+					updateTable();
+				});
+				
 							
 				stage.show(); // Pop-up form stage
 							
@@ -105,11 +119,6 @@ public class DashboardController implements Initializable {
 	}
 	
 	
-	public void clearTable(){
-		MultipleFormController.data.removeAll(MultipleFormController.data);
-	}
-	
-	
 	/**
 	 * Initialize the table on the dashboard
 	 */
@@ -117,11 +126,40 @@ public class DashboardController implements Initializable {
 	   
 		List<WorkflowInstance> wfiList = LoginController.currentUser.getInvolvesIn();
 		
+		
+		
 		for(WorkflowInstance w : wfiList){
+			currentStateOfUser = null;
+			w.getCurrentStates().forEach(state -> {
+				if(state.getUserType().equals(LoginController.currentUser.getUserType())){
+					currentStateOfUser = state;
+				}
+			});
 			
-			WorkflowEntry wfe = new WorkflowEntry(w.getId() + "", w.getWorkflowStructure().getFirstState().getName());
+			if(currentStateOfUser != null){
 			
-			data.add(wfe);
+				WorkflowEntry wfe = new WorkflowEntry(w.getId() + "", currentStateOfUser.getName());
+				
+				data.add(wfe);
+			} else {
+				w.getCompletedStates().forEach(state -> {
+					if(state.getUserType().equals(LoginController.currentUser.getUserType())){
+						currentStatesNames = "";
+						w.getCurrentStates().forEach(state1 -> {
+							currentStatesNames += state1.getName() + " ";
+						});
+						if(currentStatesNames.equals("")){
+							currentStatesNames = "Completed";
+						}
+						
+						WorkflowEntry wfe1 = new WorkflowEntry(w.getId() + "", currentStatesNames);
+						if(!data.contains(wfe1)){
+							data.add(wfe1);
+						}
+					}
+				});
+			}
+			
 		}
 		
 		
@@ -170,6 +208,24 @@ public class DashboardController implements Initializable {
 		} catch (IOException e){
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateTable(){
+	
+		//Way to update the table after editing
+		
+		for(WorkflowEntry e : data){
+			tempData.add(e);
+		}
+		
+		data.removeAll(data);
+		
+		for(WorkflowEntry e : tempData){
+			data.add(e);
+		}
+		
+		tempData.removeAll(tempData);
+		
 	}
 
 	/**
