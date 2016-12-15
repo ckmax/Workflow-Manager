@@ -35,5 +35,7 @@
             <Font size="11.0" />
          </font>
       </Button>
+      <Button fx:id="sendMsgBtn" layoutX="228.0" layoutY="134.0" mnemonicParsing="false" onAction="#sendMsgBtn" prefHeight="25.0" prefWidth="107.0" text="Send Message" />
+      <Button fx:id="showMsgBtn" layoutX="341.0" layoutY="134.0" mnemonicParsing="false" onAction="#showMsgBtn" prefHeight="25.0" prefWidth="117.0" text="Show Message(s)" />
    </children>
 </AnchorPane>

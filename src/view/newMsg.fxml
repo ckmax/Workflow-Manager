@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="393.0" prefWidth="310.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NewMsgController">
+   <children>
+      <Text layoutX="14.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Message">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Separator layoutX="14.0" layoutY="45.0" prefWidth="120.0" />
+      <Label layoutX="13.0" layoutY="103.0" text="To:" />
+      <Button fx:id="sendBtn" layoutX="192.0" layoutY="354.0" mnemonicParsing="false" onAction="#sendBtn" text="Send" />
+      <Button fx:id="cancelBtn" layoutX="244.0" layoutY="354.0" mnemonicParsing="false" onAction="#cancelBtn" text="Cancel" />
+      <Label layoutX="13.0" layoutY="140.0" prefHeight="17.0" prefWidth="76.0" text="Message" />
+      <ComboBox fx:id="usertypeCB" layoutX="80.0" layoutY="99.0" prefWidth="150.0" />
+      <Text fx:id="errorMsg" fill="RED" layoutX="34.0" layoutY="299.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <TextArea fx:id="msg" layoutX="80.0" layoutY="140.0" prefHeight="200.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>

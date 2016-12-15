@@ -48,10 +48,15 @@ public class DashboardController implements Initializable {
 	@FXML private Text usernameTF;
 	@FXML private Button initializeBtn;
 	@FXML private Button removeBtn;
+	@FXML private Button sendMsgBtn;
+	@FXML private Button showMsgBtn;
 		
 	public static WorkflowEntry selectedWorkflowEntry;
 	
 	public static Stage multipleFormStage;
+	public static Stage sendMsgStage;
+	public static Stage showMsgStage;
+
 	
 	
 	ObservableList<WorkflowEntry> data = FXCollections.observableArrayList();
@@ -80,6 +85,56 @@ public class DashboardController implements Initializable {
 		
 		data.add(wfe);
 		
+	}
+	
+	
+	public void showMsgBtn(){
+		try{
+			FXMLLoader loader = new FXMLLoader();
+			
+			loader.setLocation(getClass().getResource("/view/ShowMsg.fxml"));
+			
+			AnchorPane root = (AnchorPane)loader.load();
+			
+			Stage stage = new Stage();
+			
+			Scene scene = new Scene(root);
+			
+			stage.setScene(scene);
+			stage.setTitle("Codeflow");
+			
+			showMsgStage = stage;
+			
+			stage.show(); // Pop-up form stage
+						
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void sendMsgBtn(){
+		try{
+			FXMLLoader loader = new FXMLLoader();
+			
+			loader.setLocation(getClass().getResource("/view/newMsg.fxml"));
+			
+			AnchorPane root = (AnchorPane)loader.load();
+			
+			Stage stage = new Stage();
+			
+			Scene scene = new Scene(root);
+			
+			stage.setScene(scene);
+			stage.setTitle("Codeflow");
+			
+			sendMsgStage = stage;
+			
+						
+			stage.show(); // Pop-up form stage
+						
+		} catch (IOException e){
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -237,6 +292,8 @@ public class DashboardController implements Initializable {
 	public void removeBtn(){
 		
 		WorkflowEntry entryToBeRemoved = (WorkflowEntry) tableView.getSelectionModel().getSelectedItem();
+		
+		
 		
 		data.remove(entryToBeRemoved);
 		
