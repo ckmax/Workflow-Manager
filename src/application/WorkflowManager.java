@@ -293,8 +293,8 @@ public final class WorkflowManager {
      *
      * @return
      */
-    public static void notifyUser(User receiver, String message) {
-        receiver.addMessage(message);
+    public static void notifyUser(User sender, User receiver, String message) {
+        receiver.addMessage(new Message(sender, receiver, message));
     }
 
     /**
@@ -304,7 +304,7 @@ public final class WorkflowManager {
      */
     public static void endWorkflow(int workflowID) {
         UserManager.getInvolvesIn(workflowInstanceHashMap.get(workflowID))
-                .forEach(user -> notifyUser(user, workflowID + " is terminated"));
+                .forEach(user -> notifyUser(null, user, workflowID + " is terminated"));
 
         return;
     }

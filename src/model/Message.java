@@ -28,6 +28,10 @@ public class Message {
 
     @Override
     public String toString() {
-        return this.sender + " to " + this.receiver + ":\n" + this.getMessage();
+        try {
+            return this.sender.getName() + " to " + this.receiver.getName() + ":\n" + this.getMessage();
+        } catch (NullPointerException e) {
+            return this.message;
+        }
     }
 }
