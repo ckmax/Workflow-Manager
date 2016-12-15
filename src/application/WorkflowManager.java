@@ -98,15 +98,17 @@ public final class WorkflowManager {
 
             Element codesElement = workflowElement.getChild("codesnippets");
             List<ProgrammerCode> programmerCodeList = new ArrayList<>();
-            codesElement.getChildren().forEach(element -> {
-                programmerCodeList.add(new ProgrammerCode(element.getChildText("packagename"),
-                        element.getChildText("classname"),
-                        element.getChildText("method"),
-                        element.getChildText("stateid")));
-            });
-            programmerCodeList.forEach(programmerCode -> {
-                wfs.getState(programmerCode.getStateID()).getProgrammerCodes().add(programmerCode);
-            });
+            if (codesElement != null) {
+                codesElement.getChildren().forEach(element -> {
+                    programmerCodeList.add(new ProgrammerCode(element.getChildText("packagename"),
+                            element.getChildText("classname"),
+                            element.getChildText("method"),
+                            element.getChildText("stateid")));
+                });
+                programmerCodeList.forEach(programmerCode -> {
+                    wfs.getState(programmerCode.getStateID()).getProgrammerCodes().add(programmerCode);
+                });
+            }
 
             return wfs;
 
