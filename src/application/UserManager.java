@@ -2,6 +2,7 @@ package application;
 
 import model.User;
 import model.WorkflowInstance;
+import model.WorkflowStructure;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -240,10 +241,10 @@ public final class UserManager {
         return userTypeList;
     }
 
-    public static Collection<User> getUsers(WorkflowInstance wfi) {
+    public static Collection<User> getUsers(WorkflowStructure wfs) {
         Collection<User> users = userHashMap.values();
         users.forEach(user -> {
-            if (!wfi.getWorkflowStructure().getUserTypes().contains(user.getUserType())) {
+            if (!wfs.getUserTypes().contains(user.getUserType())) {
                 users.remove(user);
             }
         });
