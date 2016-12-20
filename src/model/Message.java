@@ -1,9 +1,11 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * Created by Derek on 12/15/16.
  */
-public class Message {
+public class Message implements Serializable {
     private final User sender;
     private final User receiver;
     private final String message;
